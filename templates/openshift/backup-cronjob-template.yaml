@@ -1,0 +1,74 @@
+---
+apiVersion: v1
+kind: Template
+metadata:
+  name: integreatly-cronjob-backup-template
+  annotations:
+    description: 'Cronjob for backing up integreatly data'
+objects:
+  - apiVersion: batch/v1beta1
+    kind: CronJob
+    metadata:
+      name: ${NAME}
+    spec:
+      schedule: ${CRON_SCHEDULE}
+      jobTemplate:
+        spec:
+          template:
+            metadata:
+              name: ${NAME}
+              labels:
+                cronjob-name: ${NAME}
+            spec:
+              containers:
+                - name: backup-cronjob
+                  image: "${IMAGE}"
+                  imagePullPolicy: Always
+                  command:
+                    - "/opt/intly/tools/entrypoint.sh"
+                    - "-c"
+                    - "${COMPONENT}"
+                    - '-b'
+                    - "${BACKEND}"
+                    - "-e"
+                    - "${ENCRYPTION}"
+                    - "-d"
+                    - "${DEBUG}"
+                  envFrom:
+                    - secretRef:
+                        name: "${COMPONENT_SECRET_NAME}"
+                    - secretRef:
+                        name: "${BACKEND_SECRET_NAME}"
+                    - secretRef:
+                        name: "${ENCRYPTION_SECRET_NAME}"
+              restartPolicy: Never
+parameters:
+  - name: NAME
+    description: Unique job name to be used in several resource name(s)
+    value: integreatly-cronjob-backup
+  - name: COMPONENT
+    description: Component name to run the backup
+    required: true
+  - name: BACKEND
+    description: Backend engine to upload the component archive
+    value: s3
+  - name: ENCRYPTION
+    description: Encryption engine to encrypt component archive before uploading it
+    value: gpg
+  - name: COMPONENT_SECRET_NAME
+    description: Component secret name to create environment variables from
+    required: true
+  - name: BACKEND_SECRET_NAME
+    description: Backend secret name to create environment variables from
+    required: true
+  - name: ENCRYPTION_SECRET_NAME
+    description: Encruption secret name to create environment variables from
+    required: true
+  - name: CRON_SCHEDULE
+    description: 'Job schedule in Cron Format [Default is to trigger a job every minute for development purposes]'
+    value: '*/1 * * * *'
+  - name: IMAGE
+    description: 'Backup docker image URL'
+    value: 'quay.io/integreatly/backup-container:master'
+  - name: DEBUG
+    description: "Debug flag to sleep the job pod after its execution"

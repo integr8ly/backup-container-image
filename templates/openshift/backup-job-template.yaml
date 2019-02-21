@@ -1,0 +1,70 @@
+---
+apiVersion: v1
+kind: Template
+metadata:
+  name: "integreatly-job-backup-template"
+  annotations:
+    description: 'Job for backing up integreatly data on deman'
+objects:
+  - apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: ${NAME}
+    spec:
+      parallelism: 1
+      completions: 1
+      template:
+        metadata:
+          name: ${NAME}
+          labels:
+            job-name: ${NAME}
+        spec:
+          containers:
+            - name: backup-job
+              image: "${IMAGE}"
+              imagePullPolicy: Always
+              command:
+                - "/opt/intly/tools/entrypoint.sh"
+                - "-c"
+                - "${COMPONENT}"
+                - '-b'
+                - "${BACKEND}"
+                - "-e"
+                - "${ENCRYPTION}"
+                - "-d"
+                - "${DEBUG}"
+              envFrom:
+                - secretRef:
+                    name: "${COMPONENT_SECRET_NAME}"
+                - secretRef:
+                    name: "${BACKEND_SECRET_NAME}"
+                - secretRef:
+                    name: "${ENCRYPTION_SECRET_NAME}"
+          restartPolicy: Never
+parameters:
+  - name: NAME
+    description: Unique job name to be used in several resource name(s)
+    value: integreatly-job-backup
+  - name: COMPONENT
+    description: Component name to run the backup
+    required: true
+  - name: BACKEND
+    description: Backend engine to upload the component archive
+    value: s3
+  - name: ENCRYPTION
+    description: Encryption engine to encrypt component archive before uploading it
+    value: gpg
+  - name: COMPONENT_SECRET_NAME
+    description: Component secret name to create environment variables from
+    required: true
+  - name: BACKEND_SECRET_NAME
+    description: Backend secret name to create environment variables from
+    required: true
+  - name: ENCRYPTION_SECRET_NAME
+    description: Encruption secret name to create environment variables from
+    required: true
+  - name: IMAGE
+    description: 'Backup docker image URL'
+    value: 'quay.io/integreatly/backup-container:master'
+  - name: DEBUG
+    description: "Debug flag to sleep the job pod after its execution"
