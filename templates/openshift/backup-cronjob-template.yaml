@@ -65,7 +65,7 @@ parameters:
     description: Encruption secret name to create environment variables from
     required: true
   - name: CRON_SCHEDULE
-    description: 'Job schedule in Cron Format [Default is everyday at 2am]'
+    description: 'Job schedule in Cron Format [Default is to trigger a job every minute for development purposes]'
     value: '*/1 * * * *'
   - name: IMAGE
     description: 'Backup docker image URL'
