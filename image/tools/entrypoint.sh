@@ -32,17 +32,24 @@ source "$DIR/lib/backend/$archive_backend.sh"
 source "$DIR/lib/encryption/$encryption_engine.sh"
 source "$DIR/lib/component/$component.sh"
 
-timestamp="$(date '+%H:%M:%S')"
-fname="/tmp/archive-$timestamp"
+DATESTAMP=$(date '+%Y-%m-%d')
+DEST=/tmp/intly
+ARCHIVES_DEST=$DEST/archives
+mkdir -p $DEST $ARCHIVES_DEST
+export HOME=$DEST
 
-url=component_get_url
-component_dump_data $url $fname.tar.gz
-encrypt_archive $fname.tar.gz
-upload_archive $fname.tar.gz.encrypted
+component_dump_data $DEST
+echo '==> Component data dump completed'
+encrypt_prepare $DEST
+encrypted_files="$(encrypt_archive $ARCHIVES_DEST)"
+echo "$encrypted_files"
+echo '==> Data encryption completed'
+upload_archive $encrypted_files $DATESTAMP backups/$component
+echo '==> Archive upload completed'
 
-echo "[$timestamp] Backup completed"
+echo "[$DATESTAMP] Backup completed"
 
 if [[ -n "$debug" ]]; then
-    echo 'Debug flag detected - will sleep for all eternity'
+    echo '==> Debug flag detected - will sleep for all eternity'
     sleep infinity
 fi
