@@ -47,7 +47,6 @@ parameters:
     value: s3
   - name: ENCRYPTION
     description: Encryption engine to encrypt component archive before uploading it
-    value: gpg
   - name: COMPONENT_SECRET_NAME
     description: Component secret name to create environment variables from
     required: true

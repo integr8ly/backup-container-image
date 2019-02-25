@@ -29,7 +29,9 @@ if [[ -z "$component" ]]; then
 fi
 
 source "$DIR/lib/backend/$archive_backend.sh"
-source "$DIR/lib/encryption/$encryption_engine.sh"
+if [[ -n "$encryption_engine" ]]; then
+    source "$DIR/lib/encryption/$encryption_engine.sh"
+fi
 source "$DIR/lib/component/$component.sh"
 
 DATESTAMP=$(date '+%Y-%m-%d')
@@ -41,9 +43,12 @@ export HOME=$DEST
 component_dump_data $DEST
 echo '==> Component data dump completed'
 encrypt_prepare $DEST
-encrypted_files="$(encrypt_archive $ARCHIVES_DEST)"
-echo "$encrypted_files"
-echo '==> Data encryption completed'
+if [[ -n "$encryption_engine" ]]; then
+    encrypted_files="$(encrypt_archive $ARCHIVES_DEST)"
+    echo '==> Data encryption completed'
+else
+    encrypted_files="$ARCHIVES_DEST/*"
+fi
 upload_archive $encrypted_files $DATESTAMP backups/$component
 echo '==> Archive upload completed'
 

@@ -7,7 +7,7 @@ function encrypt_prepare {
     gpg --import $key_path
     gpg --list-keys
 }
-
+ 
 function encrypt_archive {
     dest=$1
 
