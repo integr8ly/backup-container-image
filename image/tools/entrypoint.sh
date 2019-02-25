@@ -42,8 +42,8 @@ export HOME=$DEST
 
 component_dump_data $DEST
 echo '==> Component data dump completed'
-encrypt_prepare $DEST
 if [[ -n "$encryption_engine" ]]; then
+    encrypt_prepare $DEST
     encrypted_files="$(encrypt_archive $ARCHIVES_DEST)"
     echo '==> Data encryption completed'
 else
