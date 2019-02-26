@@ -19,7 +19,7 @@ objects:
           labels:
             job-name: ${NAME}
         spec:
-          serviceAccountName: backupjob
+          serviceAccountName: "${SERVICEACCOUNT}"
           containers:
             - name: backup-job
               image: "${IMAGE}"
@@ -34,13 +34,6 @@ objects:
                 - "${ENCRYPTION}"
                 - "-d"
                 - "${DEBUG}"
-              envFrom:
-                - secretRef:
-                    name: "${COMPONENT_SECRET_NAME}"
-                - secretRef:
-                    name: "${BACKEND_SECRET_NAME}"
-                - secretRef:
-                    name: "${ENCRYPTION_SECRET_NAME}"
           restartPolicy: Never
 parameters:
   - name: NAME
@@ -67,5 +60,8 @@ parameters:
   - name: IMAGE
     description: 'Backup docker image URL'
     value: 'quay.io/integreatly/backup-container:master'
+  - name: SERVICEACCOUNT
+    description: 'The service account used by the backup job'
+    value: backupjob
   - name: DEBUG
     description: "Debug flag to sleep the job pod after its execution"

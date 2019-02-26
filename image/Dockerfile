@@ -14,7 +14,7 @@ COPY tools /opt/intly/tools
 RUN chown -R 1001:root /opt/intly
 
 RUN find /opt/intly/tools -type f -exec chmod +x {} \; && \
-    mkdir /.kube && touch /.kube/config && chmod -R 777 /.kube
+    mkdir /.kube && touch /.kube/config && chmod -R 774 /.kube
 
 ENTRYPOINT ["/opt/intly/tools/entrypoint.sh"]
 
