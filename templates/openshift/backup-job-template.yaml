@@ -19,6 +19,7 @@ objects:
           labels:
             job-name: ${NAME}
         spec:
+          serviceAccountName: backupjob
           containers:
             - name: backup-job
               image: "${IMAGE}"

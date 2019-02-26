@@ -20,6 +20,7 @@ objects:
               labels:
                 cronjob-name: ${NAME}
             spec:
+              serviceAccountName: backupjob
               containers:
                 - name: backup-cronjob
                   image: "${IMAGE}"

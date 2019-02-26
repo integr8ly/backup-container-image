@@ -1,0 +1,12 @@
+apiVersion: authorization.openshift.io/v1
+kind: ClusterRole
+metadata:
+  name: backupjob
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+      - secrets
+    verbs:
+      - '*'
