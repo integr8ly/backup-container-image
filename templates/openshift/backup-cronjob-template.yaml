@@ -20,6 +20,7 @@ objects:
               labels:
                 cronjob-name: ${NAME}
             spec:
+              serviceAccountName: "${SERVICEACCOUNT}"
               containers:
                 - name: backup-cronjob
                   image: "${IMAGE}"
@@ -70,5 +71,8 @@ parameters:
   - name: IMAGE
     description: 'Backup docker image URL'
     value: 'quay.io/integreatly/backup-container:master'
+  - name: SERVICEACCOUNT
+    description: 'The service account used by the backup job'
+    value: backupjob
   - name: DEBUG
     description: "Debug flag to sleep the job pod after its execution"

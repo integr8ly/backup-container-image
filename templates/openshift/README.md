@@ -55,6 +55,7 @@ BACKEND_SECRET_NAME      Backend secret name to create environment variables fro
 ENCRYPTION_SECRET_NAME   Encruption secret name to create environment variables from                              
 CRON_SCHEDULE            Job schedule in Cron Format [Default is everyday at 2am]                                 */1 * * * *
 IMAGE                    Backup docker image URL                                                                  quay.io/integreatly/backup-container:master
+SERVICEACCOUNT           The service account used by the backup job.                                              backupjob
 DEBUG                    Debug flag to sleep the job pod after its execution  
 ```
 
@@ -85,5 +86,6 @@ COMPONENT_SECRET_NAME    Component secret name to create environment variables f
 BACKEND_SECRET_NAME      Backend secret name to create environment variables from                                 
 ENCRYPTION_SECRET_NAME   Encruption secret name to create environment variables from                              
 IMAGE                    Backup docker image URL                                                                  quay.io/integreatly/backup-container:master
+SERVICEACCOUNT           The service account used by the backup job.                                              backupjob
 DEBUG                    Debug flag to sleep the job pod after its execution
 ```
