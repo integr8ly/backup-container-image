@@ -34,6 +34,13 @@ objects:
                 - "${ENCRYPTION}"
                 - "-d"
                 - "${DEBUG}"
+              envFrom:
+                - secretRef:
+                    name: "${COMPONENT_SECRET_NAME}"
+                - secretRef:
+                    name: "${BACKEND_SECRET_NAME}"
+                - secretRef:
+                    name: "${ENCRYPTION_SECRET_NAME}"
           restartPolicy: Never
 parameters:
   - name: NAME
@@ -47,7 +54,6 @@ parameters:
     value: s3
   - name: ENCRYPTION
     description: Encryption engine to encrypt component archive before uploading it
-    value: gpg
   - name: COMPONENT_SECRET_NAME
     description: Component secret name to create environment variables from
     required: true

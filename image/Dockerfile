@@ -11,6 +11,7 @@ RUN yum --enablerepo=extras install -y epel-release && \
     mv openshift-origin-*/* /usr/bin/
 
 COPY tools /opt/intly/tools
+RUN mkdir -p /opt/intly/output
 RUN chown -R 1001:root /opt/intly
 
 RUN find /opt/intly/tools -type f -exec chmod +x {} \; && \
