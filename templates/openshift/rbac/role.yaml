@@ -8,5 +8,7 @@ rules:
     resources:
       - configmaps
       - secrets
+      - pods
+      - pods/exec
     verbs:
       - '*'
