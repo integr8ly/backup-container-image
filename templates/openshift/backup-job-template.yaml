@@ -34,13 +34,6 @@ objects:
                 - "${ENCRYPTION}"
                 - "-d"
                 - "${DEBUG}"
-              envFrom:
-                - secretRef:
-                    name: "${COMPONENT_SECRET_NAME}"
-                - secretRef:
-                    name: "${BACKEND_SECRET_NAME}"
-                - secretRef:
-                    name: "${ENCRYPTION_SECRET_NAME}"
           restartPolicy: Never
 parameters:
   - name: NAME

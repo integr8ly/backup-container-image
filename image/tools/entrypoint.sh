@@ -7,7 +7,7 @@ encryption_engine='gpg'
 debug=''
 
 while getopts "c:b:e:d:" opt; do
-    case "$opt" in 
+    case "$opt" in
     c)
         component="$OPTARG"
         ;;
@@ -20,7 +20,7 @@ while getopts "c:b:e:d:" opt; do
     d)
         debug="$OPTARG"
         ;;
-    esac 
+    esac
 done
 
 if [[ -z "$component" ]]; then
@@ -49,8 +49,9 @@ if [[ "$encryption_engine" ]]; then
 else
     encrypted_files="$ARCHIVES_DEST/*"
 fi
-upload_archive $encrypted_files $DATESTAMP backups/$component
+# upload_archive $encrypted_files $DATESTAMP backups/$component
 echo '==> Archive upload completed'
+echo "${encrypted_files}"
 
 echo "[$DATESTAMP] Backup completed"
 

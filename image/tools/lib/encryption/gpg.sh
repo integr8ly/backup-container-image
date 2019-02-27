@@ -7,11 +7,12 @@ function encrypt_prepare {
     gpg --import $key_path
     gpg --list-keys
 }
- 
+
 function encrypt_archive {
     dest=$1
 
     for fname in $dest/*; do
+        echo "==> now encrypting ${fname}"
         gpg --no-tty --batch --yes --encrypt --recipient "$GPG_RECIPIENT" --trust-model $GPG_TRUST_MODEL $fname
         rc=$?
         if [ $rc -ne 0 ]; then
