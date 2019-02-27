@@ -10,7 +10,7 @@ function upload_archive {
         bucket_folder=$3
     fi
 
-    for fname in "$file_list"; do
+    for fname in $file_list; do
         s3cmd put --progress $fname "s3://$AWS_S3_BUCKET_NAME/$bucket_folder/$datestamp/$(basename $fname)"
         rc=$?
         if [ $rc -ne 0 ]; then
