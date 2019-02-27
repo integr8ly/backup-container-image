@@ -14,7 +14,7 @@ Check the [smaple-config folder](./sample-config) for examples.
 
 Encryption within the backup pod is disabled by default, it can be enabled by adding the paramater: `-p 'ENCRYPTION=gpg'` and a valid openshift secret - you can check a sample secret definiton [here](./sample-config/gpg-secret).
 
-Note: You need to create an [empty secret](./sample-config/blank-secret) object and use as the `ENCRYPTION_SECRET_NAME` var value in case you want to skip opengp encryption, this is needed because the template mounts env var from an encryption secret name and the template processing will fail if this secret is not available.
+Note: You need to create an [empty secret](./sample-config/blank-secret) object and use as the `ENCRYPTION_SECRET_NAME` var value in case you want to skip opengpg encryption, this is needed because the template mounts env var from an encryption secret name and the template processing will fail if this secret is not available.
 
 ### Cronjob
 
