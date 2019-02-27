@@ -4,7 +4,7 @@ function upload_archive {
     file_list=$1
     datestamp=$2
 
-    if [[ -n "$AWS_S3_BUCKET_SUFFIX" ]]; then
+    if [[ "$AWS_S3_BUCKET_SUFFIX" ]]; then
         bucket_folder="$3/$AWS_S3_BUCKET_SUFFIX"
     else 
         bucket_folder=$3

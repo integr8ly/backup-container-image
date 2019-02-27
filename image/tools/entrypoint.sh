@@ -29,7 +29,7 @@ if [[ -z "$component" ]]; then
 fi
 
 source "$DIR/lib/backend/$archive_backend.sh"
-if [[ -n "$encryption_engine" ]]; then
+if [[ "$encryption_engine" ]]; then
     source "$DIR/lib/encryption/$encryption_engine.sh"
 fi
 source "$DIR/lib/component/$component.sh"
@@ -42,7 +42,7 @@ export HOME=$DEST
 
 component_dump_data $DEST
 echo '==> Component data dump completed'
-if [[ -n "$encryption_engine" ]]; then
+if [[ "$encryption_engine" ]]; then
     encrypt_prepare $DEST
     encrypted_files="$(encrypt_archive $ARCHIVES_DEST)"
     echo '==> Data encryption completed'
@@ -54,7 +54,7 @@ echo '==> Archive upload completed'
 
 echo "[$DATESTAMP] Backup completed"
 
-if [[ -n "$debug" ]]; then
+if [[ "$debug" ]]; then
     echo '==> Debug flag detected - will sleep for all eternity'
     sleep infinity
 fi

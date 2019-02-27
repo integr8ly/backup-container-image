@@ -6,4 +6,5 @@ roleRef:
   name: backupjob
 subjects:
   - kind: ServiceAccount
+    namespace: backup
     name: backupjob
