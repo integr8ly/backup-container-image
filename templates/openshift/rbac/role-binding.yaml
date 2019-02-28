@@ -1,3 +1,4 @@
+---
 apiVersion: authorization.openshift.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -8,3 +9,50 @@ subjects:
   - kind: ServiceAccount
     namespace: backup
     name: backupjob
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: backupjob-read-secrets
+  namespace: default
+subjects:
+  - kind: ServiceAccount
+    name: backupjob
+    namespace: 3scale
+  - kind: ServiceAccount
+    name: backupjob
+    namespace: apicurito
+  - kind: ServiceAccount
+    name: backupjob
+    namespace: codeready
+  - kind: ServiceAccount
+    name: backupjob
+    namespace: enmasse
+  - kind: ServiceAccount
+    name: backupjob
+    namespace: fuse
+  - kind: ServiceAccount
+    name: backupjob
+    namespace: gitea
+  - kind: ServiceAccount
+    name: backupjob
+    namespace: launcher
+  - kind: ServiceAccount
+    name: backupjob
+    namespace: managed-service-broker
+  - kind: ServiceAccount
+    name: backupjob
+    namespace: middleware-monitoring
+  - kind: ServiceAccount
+    name: backupjob
+    namespace: nexus
+  - kind: ServiceAccount
+    name: backupjob
+    namespace: sso
+  - kind: ServiceAccount
+    name: backupjob
+    namespace: webapp
+roleRef:
+  kind: Role
+  name: backupjob-secret-reader
