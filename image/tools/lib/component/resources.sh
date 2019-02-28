@@ -29,7 +29,7 @@ function backup_resource {
     check_resource ${type} ${ns}
     if [[ $? -eq 0 ]]; then
         echo "==> backing up $type in $ns"
-        oc get ${type} -n ${ns} -o yaml --export | gzip > ${dest}/archives/intly_${type}-${ns}-${TS}.dump.gz
+        oc get ${type} -n ${ns} -o yaml --export | gzip > ${dest}/archives/intly_${type}-${ns}-${TS}.yaml.gz
     fi
 }
 
@@ -38,7 +38,7 @@ function backup_cluster_resource {
     local type=$1
     local dest=$2
     echo "==> backing up cluster resource $type"
-    oc get ${type} -o yaml --export | gzip > ${dest}/archives/intly_${type}-${TS}.dump.gz
+    oc get ${type} -o yaml --export | gzip > ${dest}/archives/intly_${type}-${TS}.yaml.gz
 }
 
 # Archive all files
