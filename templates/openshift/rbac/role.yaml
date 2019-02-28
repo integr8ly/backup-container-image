@@ -5,5 +5,4 @@ metadata:
 rules:
   - apiGroups: ['*']
     resources: ['*']
-    verbs:
-      - '*'
+    verbs: ['get', 'list']

@@ -49,9 +49,8 @@ if [[ "$encryption_engine" ]]; then
 else
     encrypted_files="$ARCHIVES_DEST/*"
 fi
-# upload_archive $encrypted_files $DATESTAMP backups/$component
+upload_archive $encrypted_files $DATESTAMP backups/$component
 echo '==> Archive upload completed'
-echo "${encrypted_files}"
 
 echo "[$DATESTAMP] Backup completed"
 
