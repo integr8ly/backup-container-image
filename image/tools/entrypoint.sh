@@ -34,7 +34,7 @@ if [[ "$encryption_engine" ]]; then
 fi
 source "$DIR/lib/component/$component.sh"
 
-DATESTAMP=$(date '+%Y-%m-%d')
+DATESTAMP=$(date '+%Y/%m/%d')
 DEST=/tmp/intly
 ARCHIVES_DEST=$DEST/archives
 mkdir -p $DEST $ARCHIVES_DEST
@@ -49,7 +49,7 @@ if [[ "$encryption_engine" ]]; then
 else
     encrypted_files="$ARCHIVES_DEST/*"
 fi
-upload_archive $encrypted_files $DATESTAMP backups/$component
+upload_archive "${encrypted_files}" $DATESTAMP backups/$component
 echo '==> Archive upload completed'
 
 echo "[$DATESTAMP] Backup completed"
