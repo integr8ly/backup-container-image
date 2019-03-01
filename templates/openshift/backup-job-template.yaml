@@ -4,7 +4,7 @@ kind: Template
 metadata:
   name: "integreatly-job-backup-template"
   annotations:
-    description: 'Job for backing up integreatly data on deman'
+    description: 'Job for backing up integreatly data on demand'
 objects:
   - apiVersion: batch/v1
     kind: Job
@@ -34,13 +34,14 @@ objects:
                 - "${ENCRYPTION}"
                 - "-d"
                 - "${DEBUG}"
+              env:
+                - name: BACKEND_SECRET_NAME
+                  value: ${BACKEND_SECRET_NAME}
+                - name: ENCRYPTION_SECRET_NAME
+                  value: ${ENCRYPTION_SECRET_NAME}
               envFrom:
                 - secretRef:
                     name: "${COMPONENT_SECRET_NAME}"
-                - secretRef:
-                    name: "${BACKEND_SECRET_NAME}"
-                - secretRef:
-                    name: "${ENCRYPTION_SECRET_NAME}"
           restartPolicy: Never
 parameters:
   - name: NAME
@@ -54,15 +55,19 @@ parameters:
     value: s3
   - name: ENCRYPTION
     description: Encryption engine to encrypt component archive before uploading it
+    value: gpg
   - name: COMPONENT_SECRET_NAME
     description: Component secret name to create environment variables from
     required: true
+    value: dummy
   - name: BACKEND_SECRET_NAME
     description: Backend secret name to create environment variables from
     required: true
+    value: s3-credentials
   - name: ENCRYPTION_SECRET_NAME
     description: Encruption secret name to create environment variables from
     required: true
+    value: gpg-credentials
   - name: IMAGE
     description: 'Backup docker image URL'
     value: 'quay.io/integreatly/backup-container:master'
