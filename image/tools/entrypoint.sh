@@ -38,10 +38,11 @@ DATESTAMP=$(date '+%Y/%m/%d')
 DEST=/tmp/intly
 ARCHIVES_DEST=$DEST/archives
 mkdir -p $DEST $ARCHIVES_DEST
-export HOME=$DEST
 
 component_dump_data $DEST
 echo '==> Component data dump completed'
+
+export HOME=$DEST
 if [[ "$encryption_engine" ]]; then
     encrypt_prepare $DEST
     encrypted_files="$(encrypt_archive $ARCHIVES_DEST)"
