@@ -3,10 +3,6 @@ kind: ClusterRole
 metadata:
   name: backupjob
 rules:
-  - apiGroups:
-      - ""
-    resources:
-      - configmaps
-      - secrets
-    verbs:
-      - '*'
+  - apiGroups: ['*']
+    resources: ['*']
+    verbs: ['get', 'list']

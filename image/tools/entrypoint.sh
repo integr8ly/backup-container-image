@@ -7,7 +7,7 @@ encryption_engine='gpg'
 debug=''
 
 while getopts "c:b:e:d:" opt; do
-    case "$opt" in 
+    case "$opt" in
     c)
         component="$OPTARG"
         ;;
@@ -20,7 +20,7 @@ while getopts "c:b:e:d:" opt; do
     d)
         debug="$OPTARG"
         ;;
-    esac 
+    esac
 done
 
 if [[ -z "$component" ]]; then
