@@ -28,6 +28,7 @@ if [[ -z "$component" ]]; then
     exit 1
 fi
 
+source "$DIR/lib/utils.sh"
 source "$DIR/lib/backend/$archive_backend.sh"
 if [[ "$encryption_engine" ]]; then
     source "$DIR/lib/encryption/$encryption_engine.sh"
