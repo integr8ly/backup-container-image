@@ -57,14 +57,11 @@ parameters:
     description: Encryption engine to encrypt component archive before uploading it
   - name: COMPONENT_SECRET_NAME
     description: Component secret name to create environment variables from
-    required: true
-    value: dummy
   - name: BACKEND_SECRET_NAME
     description: Backend secret name to create environment variables from
     required: true
   - name: ENCRYPTION_SECRET_NAME
     description: Encruption secret name to create environment variables from
-    required: true
   - name: CRON_SCHEDULE
     description: 'Job schedule in Cron Format [Default is to trigger a job every minute for development purposes]'
     value: '*/1 * * * *'
