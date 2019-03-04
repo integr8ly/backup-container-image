@@ -1,27 +1,27 @@
 #!/usr/bin/env bash
 
-function _get_postgres_username {
+function get_postgres_username {
   echo "`oc get secret ${COMPONENT_SECRET_NAME} -n default -o jsonpath={.data.POSTGRES_USERNAME} | base64 --decode`"
 }
 
-function _get_postgres_password {
+function get_postgres_password {
   echo "`oc get secret ${COMPONENT_SECRET_NAME} -n default -o jsonpath={.data.POSTGRES_PASSWORD} | base64 --decode`"
 }
 
-function _get_postgres_host {
+function get_postgres_host {
   echo "`oc get secret ${COMPONENT_SECRET_NAME} -n default -o jsonpath={.data.POSTGRES_HOST} | base64 --decode`"
 }
 
-function _get_postgres_database {
+function get_postgres_database {
   echo "`oc get secret ${COMPONENT_SECRET_NAME} -n default -o jsonpath={.data.POSTGRES_DATABASE} | base64 --decode`"
 }
 
 function component_dump_data {
   local dest=$1
-  local POSTGRES_USERNAME=$(_get_postgres_username)
-  local POSTGRES_PASSWORD=$(_get_postgres_password)
-  local POSTGRES_HOST=$(_get_postgres_host)
-  local POSTGRES_DATABASE=$(_get_postgres_database)
+  local POSTGRES_USERNAME=$(get_postgres_username)
+  local POSTGRES_PASSWORD=$(get_postgres_password)
+  local POSTGRES_HOST=$(get_postgres_host)
+  local POSTGRES_DATABASE=$(get_postgres_database)
   echo "*:5432:*:${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}" > ~/.pgpass
   chmod 0600 ~/.pgpass
   ts=$(date '+%H:%M:%S')

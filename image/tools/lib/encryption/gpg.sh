@@ -8,7 +8,7 @@ function check_encryption_enabled {
 }
 
 function get_public_key {
-    echo "`oc get secret ${ENCRYPTION_SECRET_NAME} -n default -o jsonpath={.data.GPG_PUBLIC_KEY} | base64 --decode`"
+    echo -e "`oc get secret ${ENCRYPTION_SECRET_NAME} -n default -o jsonpath={.data.GPG_PUBLIC_KEY} | base64 --decode`"
 }
 
 function get_trust_model {
