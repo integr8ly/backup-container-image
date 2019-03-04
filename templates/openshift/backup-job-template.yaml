@@ -36,12 +36,11 @@ objects:
                 - "${DEBUG}"
               env:
                 - name: BACKEND_SECRET_NAME
-                  value: ${BACKEND_SECRET_NAME}
+                  value: "${BACKEND_SECRET_NAME}"
                 - name: ENCRYPTION_SECRET_NAME
-                  value: ${ENCRYPTION_SECRET_NAME}
-              envFrom:
-                - secretRef:
-                    name: "${COMPONENT_SECRET_NAME}"
+                  value: "${ENCRYPTION_SECRET_NAME}"
+                - name: COMPONENT_SECRET_NAME
+                  value: "${COMPONENT_SECRET_NAME}"
           restartPolicy: Never
 parameters:
   - name: NAME
