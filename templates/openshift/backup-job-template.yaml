@@ -65,8 +65,6 @@ parameters:
     value: s3-credentials
   - name: ENCRYPTION_SECRET_NAME
     description: Encruption secret name to create environment variables from
-    required: true
-    value: gpg-credentials
   - name: IMAGE
     description: 'Backup docker image URL'
     value: 'quay.io/integreatly/backup-container:master'
