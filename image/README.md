@@ -1,6 +1,6 @@
-# Integrealy Linux Container
+# Integreatly Linux Container
 
-This folder container the linux container source code that runs a intereatly backup script.
+This folder container the linux container source code that runs a integreatly backup script.
 
 ## Building
 
