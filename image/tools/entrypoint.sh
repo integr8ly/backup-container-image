@@ -44,9 +44,15 @@ echo '==> Component data dump completed'
 
 export HOME=$DEST
 if [[ "$encryption_engine" ]]; then
-    encrypt_prepare $DEST
-    encrypted_files="$(encrypt_archive $ARCHIVES_DEST)"
-    echo '==> Data encryption completed'
+    check_encryption_enabled
+    if [[ $? -eq 0 ]]; then
+        encrypt_prepare ${DEST}
+        encrypted_files="$(encrypt_archive $ARCHIVES_DEST)"
+        echo '==> Data encryption completed'
+    else
+        echo "==> encryption secret not found. Skipping"
+        encrypted_files="$ARCHIVES_DEST/*"
+    fi
 else
     encrypted_files="$ARCHIVES_DEST/*"
 fi
