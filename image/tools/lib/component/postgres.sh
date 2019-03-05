@@ -16,12 +16,18 @@ function get_postgres_database {
   echo "`oc get secret ${COMPONENT_SECRET_NAME} -n default -o jsonpath={.data.POSTGRES_DATABASE} | base64 --decode`"
 }
 
+function get_postgres_superuser {
+  echo "`oc get secret ${COMPONENT_SECRET_NAME} -n default -o jsonpath={.data.POSTGRES_SUPERUSER} | base64 --decode`"
+}
+
 function component_dump_data {
   local dest=$1
   local POSTGRES_USERNAME=$(get_postgres_username)
   local POSTGRES_PASSWORD=$(get_postgres_password)
   local POSTGRES_HOST=$(get_postgres_host)
   local POSTGRES_DATABASE=$(get_postgres_database)
+  local POSTGRES_SUPERUSER=$(get_postgres_superuser)
+
   echo "*:5432:*:${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}" > ~/.pgpass
   chmod 0600 ~/.pgpass
   ts=$(date '+%H:%M:%S')
