@@ -23,6 +23,10 @@ while getopts "c:b:e:d:" opt; do
     esac
 done
 
+if [[ "$debug" ]]; then
+    set -x
+fi
+
 if [[ -z "$component" ]]; then
     (>&2 echo 'Please specify a component using "-c"')
     exit 1
