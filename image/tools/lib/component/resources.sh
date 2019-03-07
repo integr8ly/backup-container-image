@@ -102,7 +102,10 @@ function component_dump_data {
         backup_resource addressspaceplans ${ns} ${dest}
         backup_resource brokeredinfraconfigs ${ns} ${dest}
         backup_resource standardinfraconfigs ${ns} ${dest}
-
+        backup_resource addresses ${ns} ${dest}
+        backup_resource addressspaces ${ns} ${dest}
+        backup_resource addressspaceschemas ${ns} ${dest}
+        backup_resource messagingusers ${ns} ${dest}
         backup_service_accounts ${ns} ${dest}
         backup_role_bindings ${ns} ${dest}
         backup_namespace ${ns} ${dest}
