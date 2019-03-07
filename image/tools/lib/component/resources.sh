@@ -26,10 +26,21 @@ function backup_resource {
     local type=$1
     local ns=$2
     local dest=$3
+    local loop=$4
     check_resource ${type} ${ns}
     if [[ $? -eq 0 ]]; then
         echo "==> backing up $type in $ns"
-        oc get ${type} -n ${ns} -o yaml --export | gzip > ${dest}/archives/${ns}-${type}.yaml.gz
+        if [[ "$loop" ]]; then
+            echo '---' > /tmp/${type}.yaml
+            for obj in $(oc get ${type} -n ${ns} | tr -s ' ' | cut -d ' ' -f 1 |  tail -n +2); do
+                echo '-' >> /tmp/${type}.yaml
+                echo "$(oc get ${type}/${obj} -n enmasse -o yaml --export | sed 's/^/  /')" >> /tmp/${type}.yaml
+                cat /tmp/${type}.yaml | gzip > ${dest}/archives/${ns}-${type}.yaml.gz
+                rm -f /tmp/${type}.yaml
+            done
+        else
+            oc get ${type} -n ${ns} -o yaml --export | gzip > ${dest}/archives/${ns}-${type}.yaml.gz
+        fi
     fi
 }
 
@@ -98,6 +109,14 @@ function component_dump_data {
         backup_resource prometheuses ${ns} ${dest}
         backup_resource servicemonitors ${ns} ${dest}
         backup_resource syndesises ${ns} ${dest}
+        backup_resource addressplans ${ns} ${dest}
+        backup_resource addressspaceplans ${ns} ${dest}
+        backup_resource brokeredinfraconfigs ${ns} ${dest}
+        backup_resource standardinfraconfigs ${ns} ${dest}
+        backup_resource addresses ${ns} ${dest}
+        backup_resource addressspaces ${ns} ${dest}
+        backup_resource addressspaceschemas ${ns} ${dest}
+        backup_resource messagingusers ${ns} ${dest} 'y'
         backup_service_accounts ${ns} ${dest}
         backup_role_bindings ${ns} ${dest}
         backup_namespace ${ns} ${dest}
