@@ -98,6 +98,11 @@ function component_dump_data {
         backup_resource prometheuses ${ns} ${dest}
         backup_resource servicemonitors ${ns} ${dest}
         backup_resource syndesises ${ns} ${dest}
+        backup_resource addressplans ${ns} ${dest}
+        backup_resource addressspaceplans ${ns} ${dest}
+        backup_resource brokeredinfraconfigs ${ns} ${dest}
+        backup_resource standardinfraconfigs ${ns} ${dest}
+
         backup_service_accounts ${ns} ${dest}
         backup_role_bindings ${ns} ${dest}
         backup_namespace ${ns} ${dest}
