@@ -32,17 +32,12 @@ function upload_archive {
 
     local file_list=$1
     local datestamp=$2
+    local bucket_folder=$3
 
     local AWS_S3_BUCKET_NAME=$(get_s3_bucket_name)
     local AWS_S3_BUCKET_SUFFIX="$(get_s3_bucket_suffix)"
     local AWS_ACCESS_KEY_ID="$(get_s3_key_id)"
     local AWS_SECRET_ACCESS_KEY="$(get_s3_access_key)"
-
-    if [[ "$AWS_S3_BUCKET_SUFFIX" ]]; then
-        bucket_folder="$3/$AWS_S3_BUCKET_SUFFIX"
-    else
-        bucket_folder=$3
-    fi
 
     for fname in ${file_list}; do
         s3cmd put --access_key ${AWS_ACCESS_KEY_ID} --secret_key ${AWS_SECRET_ACCESS_KEY} --progress ${fname} "s3://$AWS_S3_BUCKET_NAME/$bucket_folder/$datestamp/$(basename ${fname})"
