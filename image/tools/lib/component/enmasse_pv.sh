@@ -26,6 +26,7 @@ function component_dump_data {
         dump_pod_data ${pod} ${dump_dest}
     done
 
-    tar -zcvf "$archive_path/enmasse-pv-data.tar.gz" -C $dump_dest .
+    local ts=$(date '+%H:%M:%S')
+    tar -zcvf "$archive_path/enmasse-pv-data-${ts}.tar.gz" -C $dump_dest .
     rm -rf $dump_dest
 }
