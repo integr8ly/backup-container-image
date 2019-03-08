@@ -93,20 +93,3 @@ IMAGE                    Backup docker image URL                                
 SERVICEACCOUNT           The service account used by the backup job.                                              backupjob
 DEBUG                    Debug flag to sleep the job pod after its execution
 ```
-
-
-## Local development
-You can run the backup script locally.
-
-Prerequisites:
-- Login into your cluster via `oc login`
-- Create a symlink for oc config: `mkdir -p /tmp/intly/ && ln -s ~/.kube/ /tmp/intly/.kube`
-- Set environment variables that will be required by the component and encryption/upload step. E.g. ENCRYPTION_SECRET_NAME, BACKEND_SECRET_NAME, COMPONENT_SECRET_NAME (for mysql component), etc.
-
-Run it like:
-
-```./image/tools/entrypoint.sh -c 3scale-redis```
-
-Other params:
-- `-e ""` parameter will skip encryption
-- `-d "true"` will enable debugging mode
