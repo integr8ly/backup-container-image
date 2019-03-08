@@ -11,10 +11,6 @@ function get_s3_bucket_name {
     echo "`oc get secret -n default ${BACKEND_SECRET_NAME} -o jsonpath='{.data.AWS_S3_BUCKET_NAME}' | base64 --decode`"
 }
 
-function get_s3_bucket_suffix {
-    echo "`oc get secret -n default ${BACKEND_SECRET_NAME} -o jsonpath='{.data.AWS_S3_BUCKET_SUFFIX}' | base64 --decode`"
-}
-
 function get_s3_key_id {
     echo "`oc get secret -n default ${BACKEND_SECRET_NAME} -o jsonpath='{.data.AWS_ACCESS_KEY_ID}' | base64 --decode`"
 }
@@ -35,7 +31,6 @@ function upload_archive {
     local bucket_folder=$3
 
     local AWS_S3_BUCKET_NAME=$(get_s3_bucket_name)
-    local AWS_S3_BUCKET_SUFFIX="$(get_s3_bucket_suffix)"
     local AWS_ACCESS_KEY_ID="$(get_s3_key_id)"
     local AWS_SECRET_ACCESS_KEY="$(get_s3_access_key)"
 
