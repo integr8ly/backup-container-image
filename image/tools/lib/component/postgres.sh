@@ -1,23 +1,23 @@
 #!/usr/bin/env bash
 
 function get_postgres_username {
-  echo "`oc get secret ${COMPONENT_SECRET_NAME} -n default -o jsonpath={.data.POSTGRES_USERNAME} | base64 --decode`"
+  echo "`oc get secret ${COMPONENT_SECRET_NAME} -n ${component_secret_namespace} -o jsonpath={.data.POSTGRES_USERNAME} | base64 --decode`"
 }
 
 function get_postgres_password {
-  echo "`oc get secret ${COMPONENT_SECRET_NAME} -n default -o jsonpath={.data.POSTGRES_PASSWORD} | base64 --decode`"
+  echo "`oc get secret ${COMPONENT_SECRET_NAME} -n ${component_secret_namespace} -o jsonpath={.data.POSTGRES_PASSWORD} | base64 --decode`"
 }
 
 function get_postgres_host {
-  echo "`oc get secret ${COMPONENT_SECRET_NAME} -n default -o jsonpath={.data.POSTGRES_HOST} | base64 --decode`"
+  echo "`oc get secret ${COMPONENT_SECRET_NAME} -n ${component_secret_namespace} -o jsonpath={.data.POSTGRES_HOST} | base64 --decode`"
 }
 
 function get_postgres_database {
-  echo "`oc get secret ${COMPONENT_SECRET_NAME} -n default -o jsonpath={.data.POSTGRES_DATABASE} | base64 --decode`"
+  echo "`oc get secret ${COMPONENT_SECRET_NAME} -n ${component_secret_namespace} -o jsonpath={.data.POSTGRES_DATABASE} | base64 --decode`"
 }
 
 function get_postgres_superuser {
-  echo "`oc get secret ${COMPONENT_SECRET_NAME} -n default -o jsonpath={.data.POSTGRES_SUPERUSER} | base64 --decode`"
+  echo "`oc get secret ${COMPONENT_SECRET_NAME} -n ${component_secret_namespace} -o jsonpath={.data.POSTGRES_SUPERUSER} | base64 --decode`"
 }
 
 function component_dump_data {
