@@ -1,4 +1,4 @@
-TS=$(date '+%Y_%m_%d_%H_%M_%S')
+TS=$(date '+%H:%M:%S')
 
 function get_middleware_namespaces {
     echo "`oc get namespaces --selector='integreatly-middleware-service=true' -o jsonpath='{.items[*].metadata.name}'`"
