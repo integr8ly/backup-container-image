@@ -42,6 +42,8 @@ objects:
                       value: "${ENCRYPTION_SECRET_NAME}"
                     - name: COMPONENT_SECRET_NAME
                       value: "${COMPONENT_SECRET_NAME}"
+                    - name: PRODUCT_NAME
+                      value: "${PRODUCT_NAME}"
               restartPolicy: Never
 parameters:
   - name: NAME
