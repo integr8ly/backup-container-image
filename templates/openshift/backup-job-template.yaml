@@ -41,11 +41,16 @@ objects:
                   value: "${ENCRYPTION_SECRET_NAME}"
                 - name: COMPONENT_SECRET_NAME
                   value: "${COMPONENT_SECRET_NAME}"
+                - name: PRODUCT_NAME
+                  value: "${PRODUCT_NAME}"
           restartPolicy: Never
 parameters:
   - name: NAME
     description: Unique job name to be used in several resource name(s)
     value: integreatly-job-backup
+  - name: PRODUCT_NAME
+    description: Middleware product name to have its data archived
+    required: true
   - name: COMPONENT
     description: Component name to run the backup
     required: true

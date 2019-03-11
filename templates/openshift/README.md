@@ -29,7 +29,8 @@ oc new-app \
 -p 'ENCRYPTION_SECRET_NAME=sample-gpg-secret' \
 -p 'IMAGE=quay.io/integreatly/backup-container:master' \
 -p 'CRON_SCHEDULE=* */1 * * *' \
--p 'NAME=mysql-backup'
+-p 'NAME=mysql-backup' \
+-p 'PRODUCT_NAME=3scale'
 ```
 
 Note: There is knonwn issue in openshift 3.11 around using cronjobs in templates where you may get the following error: `error: no kind "CronJob" is registered for version "batch/v1" in scheme "k8s.io/kubernetes/pkg/api/legacyscheme/scheme.go:29"`, you will need to process the template first and then piping process command output to `oc apply` command:
@@ -43,7 +44,8 @@ oc process \
 -p 'ENCRYPTION_SECRET_NAME=sample-gpg-secret' \
 -p 'IMAGE=quay.io/integreatly/backup-container:master' \
 -p 'CRON_SCHEDULE=* */1 * * *' \
--p 'NAME=mysql-backup' | oc apply -f -
+-p 'NAME=mysql-backup' \
+-p 'PRODUCT_NAME=3scale' | oc apply -f -
 ```
 
 Parameters:
@@ -51,6 +53,7 @@ Parameters:
 ```
 NAME                     DESCRIPTION                                                          GENERATOR           VALUE
 NAME                     Unique job name to be used in several resource name(s)                                   integreatly-cronjob-backup
+PRODUCT_NAME             Middleware product name to have its data archived
 COMPONENT                Component name to run the backup                                                         
 BACKEND                  Backend engine to upload the component archive                                           s3
 ENCRYPTION               Encryption engine to encrypt component archive before uploading it                       gpg
@@ -75,7 +78,8 @@ oc new-app \
 -p 'BACKEND_SECRET_NAME=sample-s3-secret' \
 -p 'ENCRYPTION_SECRET_NAME=sample-gpg-secret' \
 -p 'IMAGE=quay.io/integreatly/backup-container:master' \
--p 'NAME=mysql-backup'
+-p 'NAME=mysql-backup' \
+-p 'PRODUCT_NAME=3scale'
 ```
 
 Parameters:
@@ -83,6 +87,7 @@ Parameters:
 ```
 NAME                     DESCRIPTION                                                          GENERATOR           VALUE
 NAME                     Unique job name to be used in several resource name(s)                                   integreatly-job-backup
+PRODUCT_NAME             Middleware product name to have its data archived
 COMPONENT                Component name to run the backup                                                         
 BACKEND                  Backend engine to upload the component archive                                           s3
 ENCRYPTION               Encryption engine to encrypt component archive before uploading it                       gpg
