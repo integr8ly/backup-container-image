@@ -42,6 +42,8 @@ objects:
                       value: "${ENCRYPTION_SECRET_NAME}"
                     - name: COMPONENT_SECRET_NAME
                       value: "${COMPONENT_SECRET_NAME}"
+                    - name: COMPONENT_SECRET_NAMESPACE
+                      value: "${COMPONENT_SECRET_NAMESPACE}"
                     - name: PRODUCT_NAME
                       value: "${PRODUCT_NAME}"
               restartPolicy: Never
@@ -62,6 +64,9 @@ parameters:
     description: Encryption engine to encrypt component archive before uploading it
   - name: COMPONENT_SECRET_NAME
     description: Component secret name to create environment variables from
+  - name: COMPONENT_SECRET_NAMESPACE
+    description: If the component secret is not in default, put it's namespace here
+    value: default
   - name: BACKEND_SECRET_NAME
     description: Backend secret name to create environment variables from
     required: true
