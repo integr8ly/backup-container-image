@@ -26,7 +26,12 @@ function component_dump_data {
         dump_pod_data ${pod} ${dump_dest}
     done
 
-    local ts=$(date '+%H:%M:%S')
-    tar -zcvf "$archive_path/enmasse-pv-data-${ts}.tar.gz" -C $dump_dest .
-    rm -rf $dump_dest
+    ls ${dump_dest}/*
+    if [[ $? -eq 0 ]]; then
+        local ts=$(date '+%H:%M:%S')
+        tar -zcvf "$archive_path/enmasse-pv-data-${ts}.tar.gz" -C $dump_dest .
+        rm -rf $dump_dest
+    else
+        echo "==> no enmasse broker data to backup"
+    fi
 }

@@ -45,6 +45,9 @@ function upload_archive {
                 echo "==> Upload $fname: FAILED"
                 exit 1
             fi
+            echo "==> Upload ${fname} completed"
+        else
+            echo "==> No backups in ${fname} to upload"
         fi
     done
 }
