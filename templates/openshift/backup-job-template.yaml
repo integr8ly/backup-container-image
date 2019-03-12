@@ -10,6 +10,8 @@ objects:
     kind: Job
     metadata:
       name: ${NAME}
+      labels:
+        monitoring-key: middleware
     spec:
       parallelism: 1
       completions: 1

@@ -10,14 +10,18 @@ objects:
     kind: CronJob
     metadata:
       name: ${NAME}
+      labels:
+        monitoring-key: middleware
     spec:
       schedule: ${CRON_SCHEDULE}
+      concurrencyPolicy: ${CONCURRENCY_POLICY}
       jobTemplate:
         spec:
           template:
             metadata:
               name: ${NAME}
               labels:
+                monitoring-key: middleware
                 cronjob-name: ${NAME}
             spec:
               serviceAccountName: "${SERVICEACCOUNT}"
@@ -83,3 +87,6 @@ parameters:
     value: backupjob
   - name: DEBUG
     description: "Debug flag to sleep the job pod after its execution"
+  - name: CONCURRENCY_POLICY
+    description: The concurrency policy of the CronJob
+    value: Forbid
