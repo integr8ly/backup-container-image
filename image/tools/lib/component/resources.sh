@@ -90,7 +90,7 @@ function component_dump_data {
     local dest=$1
     local namespaces=$(get_middleware_namespaces)
 
-    for ns in ${namespaces}; do
+    for ns in ${namespaces} "default"; do
         echo "==> processing namespace $ns"
         backup_resource secrets ${ns} ${dest}
         backup_resource configmaps ${ns} ${dest}
@@ -117,6 +117,15 @@ function component_dump_data {
         backup_resource addressspaces ${ns} ${dest}
         backup_resource addressspaceschemas ${ns} ${dest}
         backup_resource messagingusers ${ns} ${dest} 'y'
+        backup_resource limitranges ${ns} ${dest}
+        backup_resource persistentvolumeclaims ${ns} ${dest}
+        backup_resource statefulsets ${ns} ${dest}
+        backup_resource buildconfigs ${ns} ${dest}
+        backup_resource builds ${ns} ${dest}
+        backup_resource imagestreamtag ${ns} ${dest}
+        backup_resource prometheusrules ${ns} ${dest}
+        backup_resource deploymentconfigs ${ns} ${dest}
+
         backup_service_accounts ${ns} ${dest}
         backup_role_bindings ${ns} ${dest}
         backup_namespace ${ns} ${dest}
@@ -129,6 +138,8 @@ function component_dump_data {
     backup_cluster_resource clusterservicebrokers ${dest}
     backup_cluster_resource clusterroles ${dest}
     backup_cluster_resource clusterrolebindings ${dest}
+    backup_cluster_resource cronjobs ${dest}
+    backup_cluster_resource customresourcedefinitions ${dest}
 
     # Create a single archive including all files
     archive_files ${dest}
