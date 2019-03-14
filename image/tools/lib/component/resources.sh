@@ -81,7 +81,7 @@ function backup_cluster_resource {
 function archive_files {
     dest=$1
     cd ${dest}/archives
-    tar --exclude='*.tar.gz' -czf resources_${TS}.tar.gz .
+    tar --exclude='*.tar.gz' --force-local -czf resources_${TS}.tar.gz .
     rm -f *.yaml.gz
 }
 
