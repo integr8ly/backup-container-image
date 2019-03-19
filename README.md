@@ -8,3 +8,4 @@ This repository contains:
 
 * [Backup linux container source code](./image)
 * [Openshift templates](./templates/openshift)
+* [Documentation](./docs)
