@@ -1,5 +1,5 @@
 function check_encryption_enabled {
-    local result=$(oc get secret -n default ${ENCRYPTION_SECRET_NAME} -o template --template='{{.metadata.name}}')
+    local result=$(oc get secret -n ${ENCRYPTION_SECRET_NAMESPACE} ${ENCRYPTION_SECRET_NAME} -o template --template='{{.metadata.name}}')
     if [[ "$result" == "${ENCRYPTION_SECRET_NAME}" ]]; then
         return 0
     else
@@ -8,15 +8,15 @@ function check_encryption_enabled {
 }
 
 function get_public_key {
-    echo -e "`oc get secret ${ENCRYPTION_SECRET_NAME} -n default -o jsonpath={.data.GPG_PUBLIC_KEY} | base64 --decode`"
+    echo -e "`oc get secret ${ENCRYPTION_SECRET_NAME} -n ${ENCRYPTION_SECRET_NAMESPACE} -o jsonpath={.data.GPG_PUBLIC_KEY} | base64 --decode`"
 }
 
 function get_trust_model {
-    echo "`oc get secret ${ENCRYPTION_SECRET_NAME} -n default -o jsonpath={.data.GPG_TRUST_MODEL} | base64 --decode`"
+    echo "`oc get secret ${ENCRYPTION_SECRET_NAME} -n ${ENCRYPTION_SECRET_NAMESPACE} -o jsonpath={.data.GPG_TRUST_MODEL} | base64 --decode`"
 }
 
 function get_recipient {
-    echo "`oc get secret ${ENCRYPTION_SECRET_NAME} -n default -o jsonpath={.data.GPG_RECIPIENT} | base64 --decode`"
+    echo "`oc get secret ${ENCRYPTION_SECRET_NAME} -n ${ENCRYPTION_SECRET_NAMESPACE} -o jsonpath={.data.GPG_RECIPIENT} | base64 --decode`"
 }
 
 function encrypt_prepare {

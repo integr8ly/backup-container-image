@@ -1,5 +1,5 @@
 function check_backup_enabled {
-    local result=$(oc get secret -n default ${BACKEND_SECRET_NAME} -o template --template='{{.metadata.name}}')
+    local result=$(oc get secret -n ${BACKEND_SECRET_NAMESPACE} ${BACKEND_SECRET_NAME} -o template --template='{{.metadata.name}}')
     if [[ "$result" == "${BACKEND_SECRET_NAME}" ]]; then
         return 0
     else
@@ -8,15 +8,15 @@ function check_backup_enabled {
 }
 
 function get_s3_bucket_name {
-    echo "`oc get secret -n default ${BACKEND_SECRET_NAME} -o jsonpath='{.data.AWS_S3_BUCKET_NAME}' | base64 --decode`"
+    echo "`oc get secret -n ${BACKEND_SECRET_NAMESPACE} ${BACKEND_SECRET_NAME} -o jsonpath='{.data.AWS_S3_BUCKET_NAME}' | base64 --decode`"
 }
 
 function get_s3_key_id {
-    echo "`oc get secret -n default ${BACKEND_SECRET_NAME} -o jsonpath='{.data.AWS_ACCESS_KEY_ID}' | base64 --decode`"
+    echo "`oc get secret -n ${BACKEND_SECRET_NAMESPACE} ${BACKEND_SECRET_NAME} -o jsonpath='{.data.AWS_ACCESS_KEY_ID}' | base64 --decode`"
 }
 
 function get_s3_access_key {
-    echo "`oc get secret -n default ${BACKEND_SECRET_NAME} -o jsonpath='{.data.AWS_SECRET_ACCESS_KEY}' | base64 --decode`"
+    echo "`oc get secret -n ${BACKEND_SECRET_NAMESPACE} ${BACKEND_SECRET_NAME} -o jsonpath='{.data.AWS_SECRET_ACCESS_KEY}' | base64 --decode`"
 }
 
 function upload_archive {
