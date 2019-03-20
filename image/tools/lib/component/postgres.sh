@@ -30,7 +30,7 @@ function component_dump_data {
 
   echo "*:5432:*:${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}" > ~/.pgpass
   chmod 0600 ~/.pgpass
-  ts=$(date '+%H:%M:%S')
+  ts=$(date '+%H_%M_%S')
   export PGPASSFILE=~/.pgpass
   namespace=${POSTGRES_HOST#*.}
   namespace=${namespace%.*}

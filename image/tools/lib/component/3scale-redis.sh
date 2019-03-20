@@ -1,5 +1,5 @@
 function component_dump_data {
-    local ts=$(date '+%H:%M:%S')
+    local ts=$(date '+%H_%M_%S')
     dest_file="$1/archives/dump-${ts}.rdb"
     dump_rdb_path="/var/lib/redis/data/dump.rdb"
 

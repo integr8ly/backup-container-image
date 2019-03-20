@@ -35,7 +35,7 @@ function component_dump_data {
     databases=$(mysql -h${MYSQL_HOST} -u${MYSQL_USER}  -p${MYSQL_PASSWORD} -e 'SHOW DATABASES' | tail -n+2 | grep -v information_schema)
 
     for database in ${databases}; do
-        local ts=$(date '+%H:%M:%S')
+        local ts=$(date '+%H_%M_%S')
         mysqldump --single-transaction -h${MYSQL_HOST} -u${MYSQL_USER} -p${MYSQL_PASSWORD} -R ${database} | gzip > ${dest}/archives/${database}-${ts}.dump.gz
         local rc=$?
         if [[ ${rc} -ne 0 ]]; then
