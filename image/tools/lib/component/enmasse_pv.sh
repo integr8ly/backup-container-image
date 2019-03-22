@@ -28,7 +28,7 @@ function component_dump_data {
 
     ls ${dump_dest}/*
     if [[ $? -eq 0 ]]; then
-        local ts=$(date '+%H:%M:%S')
+        local ts=$(date '+%H_%M_%S')
         tar -zcvf "$archive_path/enmasse-pv-data-${ts}.tar.gz" -C $dump_dest .
         rm -rf $dump_dest
     else

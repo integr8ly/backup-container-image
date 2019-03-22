@@ -18,7 +18,7 @@ function component_dump_data {
         dump_dest="/tmp/codeready-data"
         mkdir -p $dump_dest
         for i in $workspace_pods; do dump_pod_data $i $dump_dest; done
-        local ts=$(date '+%H:%M:%S')
+        local ts=$(date '+%H_%M_%S')
         tar -zcvf "$archive_path/codeready-pv-data-${ts}.tar.gz" -C $dump_dest .
         rm -rf $dump_dest
     fi
