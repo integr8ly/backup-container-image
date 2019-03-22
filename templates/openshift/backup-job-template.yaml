@@ -30,8 +30,6 @@ objects:
                 - "/opt/intly/tools/entrypoint.sh"
                 - "-c"
                 - "${COMPONENT}"
-                - "-n"
-                - "${COMPONENT_SECRET_NAMESPACE}"
                 - '-b'
                 - "${BACKEND}"
                 - "-e"
@@ -41,8 +39,12 @@ objects:
               env:
                 - name: BACKEND_SECRET_NAME
                   value: "${BACKEND_SECRET_NAME}"
+                - name: BACKEND_SECRET_NAMESPACE
+                  value: "${BACKEND_SECRET_NAMESPACE}"
                 - name: ENCRYPTION_SECRET_NAME
                   value: "${ENCRYPTION_SECRET_NAME}"
+                - name: ENCRYPTION_SECRET_NAMESPACE
+                  value: "${ENCRYPTION_SECRET_NAMESPACE}"
                 - name: COMPONENT_SECRET_NAME
                   value: "${COMPONENT_SECRET_NAME}"
                 - name: COMPONENT_SECRET_NAMESPACE
@@ -74,8 +76,14 @@ parameters:
     description: Backend secret name to create environment variables from
     required: true
     value: s3-credentials
+  - name: BACKEND_SECRET_NAMESPACE
+    description: Backend secret namespace to create environment variables from
+    value: default
   - name: ENCRYPTION_SECRET_NAME
     description: Encruption secret name to create environment variables from
+  - name: ENCRYPTION_SECRET_NAMESPACE
+    description: Encruption secret namespace to create environment variables from
+    value: default
   - name: IMAGE
     description: 'Backup docker image URL'
     value: 'quay.io/integreatly/backup-container:master'

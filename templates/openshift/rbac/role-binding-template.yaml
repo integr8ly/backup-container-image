@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Template
+metadata:
+  name: integreatly-backup-rolebinding-template
+  annotations:
+    description: RoleBinding for Integreatly backups
+objects:
+  - apiVersion: authorization.openshift.io/v1
+    kind: ClusterRoleBinding
+    metadata:
+      name: backupjob
+    roleRef:
+      name: backupjob
+    subjects:
+      - kind: ServiceAccount
+        name: backupjob
+        namespace: "${SA_NAMESPACE}"
+parameters:
+  - name: SA_NAMESPACE
+    description: The namespace the ServiceAccount is stored in
+    value: default

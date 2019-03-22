@@ -1,5 +1,5 @@
 function check_mysql_backup_enabled {
-    local result=$(oc get secret -n default ${COMPONENT_SECRET_NAME} -o template --template='{{.metadata.name}}')
+    local result=$(oc get secret -n ${COMPONENT_SECRET_NAMESPACE} ${COMPONENT_SECRET_NAME} -o template --template='{{.metadata.name}}')
     if [[ "$result" == "${COMPONENT_SECRET_NAME}" ]]; then
         return 0
     else
@@ -8,15 +8,15 @@ function check_mysql_backup_enabled {
 }
 
 function get_mysql_host {
-    echo "`oc get secret ${COMPONENT_SECRET_NAME} -n default -o jsonpath={.data.MYSQL_HOST} | base64 --decode`"
+    echo "`oc get secret ${COMPONENT_SECRET_NAME} -n ${COMPONENT_SECRET_NAMESPACE} -o jsonpath={.data.MYSQL_HOST} | base64 --decode`"
 }
 
 function get_mysql_user {
-    echo "`oc get secret ${COMPONENT_SECRET_NAME} -n default -o jsonpath={.data.MYSQL_USER} | base64 --decode`"
+    echo "`oc get secret ${COMPONENT_SECRET_NAME} -n ${COMPONENT_SECRET_NAMESPACE} -o jsonpath={.data.MYSQL_USER} | base64 --decode`"
 }
 
 function get_mysql_password {
-    echo "`oc get secret ${COMPONENT_SECRET_NAME} -n default -o jsonpath={.data.MYSQL_PASSWORD} | base64 --decode`"
+    echo "`oc get secret ${COMPONENT_SECRET_NAME} -n ${COMPONENT_SECRET_NAMESPACE} -o jsonpath={.data.MYSQL_PASSWORD} | base64 --decode`"
 }
 
 function component_dump_data {

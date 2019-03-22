@@ -2,7 +2,6 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 component=''
-component_secret_namespace='default'
 archive_backend='s3'
 encryption_engine='gpg'
 debug=''
@@ -11,9 +10,6 @@ while getopts "c:n:b:e:d:" opt; do
     case "$opt" in
     c)
         component="$OPTARG"
-        ;;
-    n)
-        component_secret_namespace="$OPTARG"
         ;;
     b)
         archive_backend="$OPTARG"

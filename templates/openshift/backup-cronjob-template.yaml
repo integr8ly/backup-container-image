@@ -42,8 +42,12 @@ objects:
                   env:
                     - name: BACKEND_SECRET_NAME
                       value: "${BACKEND_SECRET_NAME}"
+                    - name: BACKEND_SECRET_NAMESPACE
+                      value: "${BACKEND_SECRET_NAMESPACE}"
                     - name: ENCRYPTION_SECRET_NAME
                       value: "${ENCRYPTION_SECRET_NAME}"
+                    - name: ENCRYPTION_SECRET_NAMESPACE
+                      value: "${ENCRYPTION_SECRET_NAMESPACE}"
                     - name: COMPONENT_SECRET_NAME
                       value: "${COMPONENT_SECRET_NAME}"
                     - name: COMPONENT_SECRET_NAMESPACE
@@ -74,8 +78,14 @@ parameters:
   - name: BACKEND_SECRET_NAME
     description: Backend secret name to create environment variables from
     required: true
+  - name: BACKEND_SECRET_NAMESPACE
+    description: Backend secret namespace to create environment variables from
+    value: default
   - name: ENCRYPTION_SECRET_NAME
-    description: Encruption secret name to create environment variables from
+    description: Encryption secret name to create environment variables from
+  - name: ENCRYPTION_SECRET_NAMESPACE
+    description: Encryption secret namespace to create environment variables from
+    value: default
   - name: CRON_SCHEDULE
     description: 'Job schedule in Cron Format [Default is to trigger a job every minute for development purposes]'
     value: '*/1 * * * *'
