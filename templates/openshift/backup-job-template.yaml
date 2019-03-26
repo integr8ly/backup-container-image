@@ -51,6 +51,8 @@ objects:
                   value: "${COMPONENT_SECRET_NAMESPACE}"
                 - name: PRODUCT_NAME
                   value: "${PRODUCT_NAME}"
+                - name: PRODUCT_NAMESPACE_PREFIX
+                  value: "${PRODUCT_NAMESPACE_PREFIX}"
           restartPolicy: Never
 parameters:
   - name: NAME
@@ -62,6 +64,9 @@ parameters:
   - name: COMPONENT
     description: Component name to run the backup
     required: true
+  - name: PRODUCT_NAMESPACE_PREFIX
+    description: Namespace prefix for individual product namespaces. Empty by default. Planned to be 'openshift-' for RHMI.
+    value: ''
   - name: BACKEND
     description: Backend engine to upload the component archive
     value: s3
