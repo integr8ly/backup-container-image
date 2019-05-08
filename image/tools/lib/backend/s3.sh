@@ -21,7 +21,7 @@ function get_s3_access_key {
 
 function upload_archive {
     check_backup_enabled
-    if [[ $? -eq 1 ]]; then
+    if [ "$?" -eq "1" ]; then
         echo "==> backend secret not found. Skipping"
         return 0
     fi
@@ -38,10 +38,10 @@ function upload_archive {
         ls ${fname}
 
         # ls will exit with 1 if the glob does not expand to any files
-        if [[ $? -eq 0 ]]; then
+        if [ "$?" -eq "0" ]; then
             s3cmd put --access_key ${AWS_ACCESS_KEY_ID} --secret_key ${AWS_SECRET_ACCESS_KEY} --progress ${fname} "s3://$AWS_S3_BUCKET_NAME/$bucket_folder/$datestamp/$(basename ${fname})"
             rc=$?
-            if [[ ${rc} -ne 0 ]]; then
+            if [ "${rc}" -ne "0" ]; then
                 echo "==> Upload $fname: FAILED"
                 exit 1
             fi

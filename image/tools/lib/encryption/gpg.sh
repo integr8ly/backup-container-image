@@ -1,6 +1,6 @@
 function check_encryption_enabled {
     local result=$(oc get secret -n ${ENCRYPTION_SECRET_NAMESPACE} ${ENCRYPTION_SECRET_NAME} -o template --template='{{.metadata.name}}')
-    if [[ "$result" == "${ENCRYPTION_SECRET_NAME}" ]]; then
+    if [ "$result" -eq "${ENCRYPTION_SECRET_NAME}" ]; then
         return 0
     else
         return 1

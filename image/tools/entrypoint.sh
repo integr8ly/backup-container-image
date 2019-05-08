@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -euo pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 component=''
@@ -46,13 +47,22 @@ mkdir -p $DEST $ARCHIVES_DEST
 export HOME=$DEST
 
 component_dump_data $DEST
+if [ "$?" -ne "0" ]; then
+    echo "==> Component data dump failed"
+    exit 1
+fi
 echo '==> Component data dump completed'
 
 if [[ "$encryption_engine" ]]; then
     check_encryption_enabled
-    if [[ $? -eq 0 ]]; then
+    if [ "$?" -eq "0" ]; then
         encrypt_prepare ${DEST}
         encrypted_files="$(encrypt_archive $ARCHIVES_DEST)"
+        if [ "$?" -ne "0" ]; then
+            echo "==> Encryption failed"
+            exit 1
+        fi
+
         echo '==> Data encryption completed'
     else
         echo "==> encryption secret not found. Skipping"
@@ -61,7 +71,12 @@ if [[ "$encryption_engine" ]]; then
 else
     encrypted_files="$ARCHIVES_DEST/*"
 fi
+
 upload_archive "${encrypted_files}" $DATESTAMP backups/$PRODUCT_NAME/$component
+if [ "$?" -ne "0" ]; then
+    echo "==> Archive upload failed"
+    exit 1
+fi
 
 echo "[$DATESTAMP] Backup completed"
 

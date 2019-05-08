@@ -13,7 +13,7 @@ function check_resource {
     # was returned but no actual results. That would be at
     # least two lines: one for the header and one for each
     # resource found
-    if [[ "$result"  == "1" ]]; then
+    if [ "$result"  -eq "1" ]; then
         echo "==> No $type in $ns to back up"
         return 1
     else
@@ -28,7 +28,7 @@ function backup_resource {
     local dest=$3
     local loop=$4
     check_resource ${type} ${ns}
-    if [[ $? -eq 0 ]]; then
+    if [ "$?" -eq "0" ]; then
         echo "==> backing up $type in $ns"
         if [[ "$loop" ]]; then
             echo '---' > /tmp/${type}.yaml
