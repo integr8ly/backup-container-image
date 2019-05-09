@@ -35,10 +35,10 @@ function component_dump_data {
   namespace=${POSTGRES_HOST#*.}
   namespace=${namespace%.*}
 
-  if [ ${POSTGRES_SUPERUSER} == "true" ]; then
+  if [ "${POSTGRES_SUPERUSER}" == "true" ]; then
     pg_dumpall --clean --if-exists --oids -U ${POSTGRES_USERNAME} -h ${POSTGRES_HOST} | gzip > ${dest}/archives/${namespace}.${ts}.pg_dumpall.gz
     rc=$?
-    if [ ${rc} -ne 0 ]; then
+    if [ "${rc}" -ne "0" ]; then
       echo "backup of postgresql: FAILED"
       exit 1
     fi
@@ -47,7 +47,7 @@ function component_dump_data {
       echo "dumping ${db}"
       pg_dump --clean --if-exists --oids -U ${POSTGRES_USERNAME} -h ${POSTGRES_HOST} ${db} | gzip > ${dest}/archives/${namespace}.${db}-${ts}.pg_dump.gz
       rc=$?
-      if [ ${rc} -ne 0 ]; then
+      if [ "${rc}" -ne "0" ]; then
           echo "==> Dump $db: FAILED"
           exit 1
       fi

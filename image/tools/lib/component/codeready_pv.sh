@@ -10,8 +10,7 @@ function dump_pod_data {
 function component_dump_data {
     workspace_pods=$(oc get pods -n ${PRODUCT_NAMESPACE_PREFIX}codeready | grep workspace | awk '{print $1}')
 
-    if [ ${#workspace_pods} = 0 ]
-    then
+    if [ "${#workspace_pods}" -eq "0" ]; then
         echo "No workspaces found to backup"
     else
         archive_path="$1/archives"
