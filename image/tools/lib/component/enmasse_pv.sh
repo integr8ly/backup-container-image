@@ -19,6 +19,11 @@ function component_dump_data {
     local dump_dest="/tmp/enmasse-data"
     local pods=$(get_broker_pods)
 
+    if [ "${#pods}" -eq "0" ]; then
+        echo "=>> No broker pods found to backup"
+        exit 0
+    fi
+
     mkdir -p ${dump_dest}
 
     for pod in ${pods}; do
