@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+function get_postgres_version {
+  echo "`oc get secret ${COMPONENT_SECRET_NAME} -n ${COMPONENT_SECRET_NAMESPACE} -o jsonpath={.data.POSTGRES_VERSION} | base64 --decode`"
+}
+
 function get_postgres_username {
   echo "`oc get secret ${COMPONENT_SECRET_NAME} -n ${COMPONENT_SECRET_NAMESPACE} -o jsonpath={.data.POSTGRES_USERNAME} | base64 --decode`"
 }
@@ -27,6 +31,13 @@ function component_dump_data {
   local POSTGRES_HOST=$(get_postgres_host)
   local POSTGRES_DATABASE=$(get_postgres_database)
   local POSTGRES_SUPERUSER=$(get_postgres_superuser)
+  local POSTGRES_VERSION=$(get_postgres_version)
+
+  if [[ -z "$POSTGRES_VERSION" ]]; then
+    POSTGRES_VERSION=9.6
+  fi
+
+  local POSTGRES_PREFIX="/usr/pgsql-${POSTGRES_VERSION}/bin"
 
   echo "*:5432:*:${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}" > ~/.pgpass
   chmod 0600 ~/.pgpass
@@ -35,19 +46,19 @@ function component_dump_data {
   namespace=${POSTGRES_HOST#*.}
   namespace=${namespace%.*}
 
-  if [ "${POSTGRES_SUPERUSER}" == "true" ]; then
-    pg_dumpall --clean --if-exists --oids -U ${POSTGRES_USERNAME} -h ${POSTGRES_HOST} | gzip > ${dest}/archives/${namespace}.${ts}.pg_dumpall.gz
+  if [[ "${POSTGRES_SUPERUSER}" == "true" ]]; then
+    ${POSTGRES_PREFIX}/pg_dumpall --clean --if-exists --oids -U ${POSTGRES_USERNAME} -h ${POSTGRES_HOST} | gzip > ${dest}/archives/${namespace}.${ts}.pg_dumpall.gz
     rc=$?
-    if [ "${rc}" -ne "0" ]; then
+    if [[ "${rc}" -ne "0" ]]; then
       echo "backup of postgresql: FAILED"
       exit 1
     fi
   else
-    for db in $(psql -U ${POSTGRES_USERNAME} -h ${POSTGRES_HOST} ${POSTGRES_DATABASE} -A -t -c '\l' | cut -f1 -d'|' | grep -v '=' | grep -v 'template'); do
+    for db in $(${POSTGRES_PREFIX}/psql -U ${POSTGRES_USERNAME} -h ${POSTGRES_HOST} ${POSTGRES_DATABASE} -A -t -c '\l' | cut -f1 -d'|' | grep -v '=' | grep -v 'template'); do
       echo "dumping ${db}"
-      pg_dump --clean --if-exists --oids -U ${POSTGRES_USERNAME} -h ${POSTGRES_HOST} ${db} | gzip > ${dest}/archives/${namespace}.${db}-${ts}.pg_dump.gz
+      ${POSTGRES_PREFIX}/pg_dump --clean --if-exists --oids -U ${POSTGRES_USERNAME} -h ${POSTGRES_HOST} ${db} | gzip > ${dest}/archives/${namespace}.${db}-${ts}.pg_dump.gz
       rc=$?
-      if [ "${rc}" -ne "0" ]; then
+      if [[ "${rc}" -ne "0" ]]; then
           echo "==> Dump $db: FAILED"
           exit 1
       fi
