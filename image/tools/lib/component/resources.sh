@@ -13,7 +13,7 @@ function check_resource {
     # was returned but no actual results. That would be at
     # least two lines: one for the header and one for each
     # resource found
-    if [ "$result"  -eq "1" ]; then
+    if [[ "$result"  -eq "1" ]]; then
         echo "==> No $type in $ns to back up"
         return 1
     else
@@ -26,11 +26,16 @@ function backup_resource {
     local type=$1
     local ns=$2
     local dest=$3
-    local loop=$4
+    local loop=${4-default}
+
+    # Disable extended error checks. The check_resource function relies on a non-zero
+    # return code, which is interpreted as a failed command and causes the script to be
+    # terminated with the '-e' option
+    set +eo pipefail
     check_resource ${type} ${ns}
-    if [ "$?" -eq "0" ]; then
+    if [[ "$?" -eq "0" ]]; then
         echo "==> backing up $type in $ns"
-        if [[ "$loop" ]]; then
+        if [[ "$loop" == "y" ]]; then
             echo '---' > /tmp/${type}.yaml
             for obj in $(oc get ${type} -n ${ns} | tr -s ' ' | cut -d ' ' -f 1 |  tail -n +2); do
                 echo '-' >> /tmp/${type}.yaml
@@ -42,6 +47,8 @@ function backup_resource {
             oc get ${type} -n ${ns} -o yaml --export | gzip > ${dest}/archives/${ns}-${type}.yaml.gz
         fi
     fi
+    # Re-enable extended error checks
+    set -eo pipefail
 }
 
 # Backs up a namespace
