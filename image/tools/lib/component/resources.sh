@@ -13,7 +13,7 @@ function check_resource {
     # was returned but no actual results. That would be at
     # least two lines: one for the header and one for each
     # resource found
-    if [[ "$result"  -eq "1" ]]; then
+    if [ "$result"  -eq "1" ]; then
         echo "==> No $type in $ns to back up"
         return 1
     else
@@ -33,9 +33,9 @@ function backup_resource {
     # terminated with the '-e' option
     set +eo pipefail
     check_resource ${type} ${ns}
-    if [[ "$?" -eq "0" ]]; then
+    if [ "$?" -eq "0" ]; then
         echo "==> backing up $type in $ns"
-        if [[ "$loop" == "y" ]]; then
+        if [ "$loop" == "y" ]; then
             echo '---' > /tmp/${type}.yaml
             for obj in $(oc get ${type} -n ${ns} | tr -s ' ' | cut -d ' ' -f 1 |  tail -n +2); do
                 echo '-' >> /tmp/${type}.yaml
