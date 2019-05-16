@@ -88,8 +88,10 @@ function backup_cluster_resource {
 function archive_files {
     dest=$1
     cd ${dest}/archives
-    tar --exclude='*.tar.gz' --force-local -czf resources_${TS}.tar.gz .
+    tar --exclude='*.tar.gz' --force-local -czf ../resources_${TS}.tar.gz .
     rm -f *.yaml.gz
+    # Move the archive back to /<dest>/archives because that's where the next step expects it
+    mv ../resources_${TS}.tar.gz .
 }
 
 # Entry point
