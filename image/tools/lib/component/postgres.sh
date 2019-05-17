@@ -55,6 +55,12 @@ function component_dump_data {
     fi
   else
     for db in $(${POSTGRES_PREFIX}/psql -U ${POSTGRES_USERNAME} -h ${POSTGRES_HOST} ${POSTGRES_DATABASE} -A -t -c '\l' | cut -f1 -d'|' | grep -v '=' | grep -v 'template'); do
+      # db blacklist goes here
+      # we don't want to dump 'sampledb'
+      if [ "$db" = "sampledb" ]; then
+        continue
+      fi
+
       echo "dumping ${db}"
       ${POSTGRES_PREFIX}/pg_dump --clean --if-exists --oids -U ${POSTGRES_USERNAME} -h ${POSTGRES_HOST} ${db} | gzip > ${dest}/archives/${namespace}.${db}-${ts}.pg_dump.gz
       rc=$?
