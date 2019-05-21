@@ -39,7 +39,7 @@ function backup_resource {
             echo '---' > /tmp/${type}.yaml
             for obj in $(oc get ${type} -n ${ns} | tr -s ' ' | cut -d ' ' -f 1 |  tail -n +2); do
                 echo '-' >> /tmp/${type}.yaml
-                echo "$(oc get ${type}/${obj} -n enmasse -o yaml --export | sed 's/^/  /')" >> /tmp/${type}.yaml
+                echo "$(oc get ${type}/${obj} -n ${ns} -o yaml --export | sed 's/^/  /')" >> /tmp/${type}.yaml
                 cat /tmp/${type}.yaml | gzip > ${dest}/archives/${ns}-${type}.yaml.gz
                 rm -f /tmp/${type}.yaml
             done
