@@ -134,6 +134,10 @@ function component_dump_data {
         backup_resource imagestreamtag ${ns} ${dest}
         backup_resource prometheusrules ${ns} ${dest}
         backup_resource deploymentconfigs ${ns} ${dest}
+        backup_resource authenticationservices ${ns} ${dest}
+        backup_resource brokeredinfraconfigs ${ns} ${dest}
+        backup_resource consoleservices ${ns} ${dest}
+        backup_resource iotconfigs ${ns} ${dest}
 
         backup_service_accounts ${ns} ${dest}
         backup_role_bindings ${ns} ${dest}
