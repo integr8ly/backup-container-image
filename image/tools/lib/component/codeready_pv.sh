@@ -8,18 +8,16 @@ function dump_pod_data {
 }
 
 function component_dump_data {
-    local pods="$(oc get pods -n ${PRODUCT_NAMESPACE_PREFIX}codeready | grep workspace)"
+    local pods="$(oc get pods -n ${PRODUCT_NAMESPACE_PREFIX}codeready | grep workspace | awk '{print $1}')"
     if [ "${#pods}" -eq "0" ]; then
         echo "=>> No workspaces found to backup"
         exit 0
     fi
 
-    local workspace_pods="$(echo $pods | awk '{print $1}')"
     local archive_path="$1/archives"
     local dump_dest="/tmp/codeready-data"
     mkdir -p $dump_dest
-    for i in $workspace_pods; do dump_pod_data $i $dump_dest; done
+    for pod in $pods; do dump_pod_data $pod $dump_dest; done
     local ts=$(date '+%H_%M_%S')
-    tar -zcvf "$archive_path/codeready-pv-data-${ts}.tar.gz" -C $dump_dest .
-    rm -rf $dump_dest
+    tar -zcvf "$archive_path/codeready-pv-data-${ts}.tar.gz" -C "${dump_dest}" .
 }
