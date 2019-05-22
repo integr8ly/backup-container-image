@@ -36,12 +36,8 @@ function backup_resource {
     if [ "$?" -eq "0" ]; then
         echo "==> backing up $type in $ns"
         if [ "$loop" == "y" ]; then
-            echo '---' > /tmp/${type}.yaml
             for obj in $(oc get ${type} -n ${ns} | tr -s ' ' | cut -d ' ' -f 1 |  tail -n +2); do
-                echo '-' >> /tmp/${type}.yaml
-                echo "$(oc get ${type}/${obj} -n ${ns} -o yaml --export | sed 's/^/  /')" >> /tmp/${type}.yaml
-                cat /tmp/${type}.yaml | gzip > ${dest}/archives/${ns}-${type}.yaml.gz
-                rm -f /tmp/${type}.yaml
+                echo "$(oc get ${type}/${obj} -n ${ns} -o yaml --export)" > ${dest}/archives/${ns}-${type}.${obj}.yaml
             done
         else
             oc get ${type} -n ${ns} -o yaml --export | gzip > ${dest}/archives/${ns}-${type}.yaml.gz
