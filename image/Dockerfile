@@ -7,6 +7,7 @@ RUN yum --enablerepo=extras install -y epel-release && \
     yum install -y https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-redhat96-9.6-3.noarch.rpm && \
     yum install -y postgresql96 && \
     yum install -y postgresql10 && \
+    yum install -y redis && \
     yum clean all && \
     pip install -U pip && \
     pip install awscli s3cmd && \
