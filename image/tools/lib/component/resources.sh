@@ -134,6 +134,10 @@ function component_dump_data {
         backup_resource brokeredinfraconfigs ${ns} ${dest}
         backup_resource consoleservices ${ns} ${dest}
         backup_resource iotconfigs ${ns} ${dest}
+        backup_resource mobilesecurityservicedbs ${ns} ${dest}
+        backup_resource mobilesecurityserviceapps ${ns} ${dest}
+        backup_resrouce mobilesecurityservices ${ns} ${dest}
+        backup_resource mobilesecurityservicebackups ${ns} ${dest}
 
         backup_service_accounts ${ns} ${dest}
         backup_role_bindings ${ns} ${dest}
