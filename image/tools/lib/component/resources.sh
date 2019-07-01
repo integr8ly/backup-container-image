@@ -138,6 +138,10 @@ function component_dump_data {
         backup_resource mobilesecurityserviceapps ${ns} ${dest}
         backup_resrouce mobilesecurityservices ${ns} ${dest}
         backup_resource mobilesecurityservicebackups ${ns} ${dest}
+        backup_resource unifiedpushservers ${ns} ${dest}
+        backup_resource pushapplications ${ns} ${dest}
+        backup_resource androidvariants ${ns} ${dest}
+        backup_resource iosvariants ${ns} ${dest}
 
         backup_service_accounts ${ns} ${dest}
         backup_role_bindings ${ns} ${dest}
