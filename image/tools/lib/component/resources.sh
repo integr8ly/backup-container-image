@@ -136,7 +136,7 @@ function component_dump_data {
         backup_resource iotconfigs ${ns} ${dest}
         backup_resource mobilesecurityservicedbs ${ns} ${dest}
         backup_resource mobilesecurityserviceapps ${ns} ${dest}
-        backup_resrouce mobilesecurityservices ${ns} ${dest}
+        backup_resource mobilesecurityservices ${ns} ${dest}
         backup_resource mobilesecurityservicebackups ${ns} ${dest}
         backup_resource unifiedpushservers ${ns} ${dest}
         backup_resource pushapplications ${ns} ${dest}
