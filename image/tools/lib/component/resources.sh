@@ -142,6 +142,8 @@ function component_dump_data {
         backup_resource pushapplications ${ns} ${dest}
         backup_resource androidvariants ${ns} ${dest}
         backup_resource iosvariants ${ns} ${dest}
+        backup_resource mobileclients ${ns} ${dest}
+        backup_resource mobiledeveloperconsoles ${ns} ${dest}
 
         backup_service_accounts ${ns} ${dest}
         backup_role_bindings ${ns} ${dest}
