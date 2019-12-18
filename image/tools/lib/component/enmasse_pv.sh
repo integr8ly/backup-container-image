@@ -2,7 +2,7 @@
 
 # Brokered pods have a storage PV attached. They are labelled with role=broker
 function get_broker_pods {
-    echo "`oc get pods --selector='role=broker' -n ${PRODUCT_NAMESPACE_PREFIX}enmasse -o jsonpath='{.items[*].metadata.name}'`"
+    echo "`oc get pods --selector='role=broker' -n ${PRODUCT_NAMESPACE} -o jsonpath='{.items[*].metadata.name}'`"
 }
 
 function dump_pod_data {
@@ -12,9 +12,12 @@ function dump_pod_data {
 
     # Create a backup directory for every pod with the same name
     # as the pod
-    cp_pod_data "${PRODUCT_NAMESPACE_PREFIX}enmasse/${pod}:${data_dir}" "${dest}/${pod}"
+    cp_pod_data "${PRODUCT_NAMESPACE}/${pod}:${data_dir}" "${dest}/${pod}"
 }
 function component_dump_data {
+    if [[ -z "${PRODUCT_NAMESPACE:-}" ]]; then
+        PRODUCT_NAMESPACE="${PRODUCT_NAMESPACE_PREFIX}enmasse"
+    fi
     local archive_path="$1/archives"
     local dump_dest="/tmp/enmasse-data"
     local pods=$(get_broker_pods)
