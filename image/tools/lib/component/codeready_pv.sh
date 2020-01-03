@@ -11,7 +11,7 @@ function component_dump_data {
     if [[ -z "${PRODUCT_NAMESPACE:-}" ]]; then
         PRODUCT_NAMESPACE="${PRODUCT_NAMESPACE_PREFIX}codeready"
     fi
-    local pods="$(oc get pods -n ${PRODUCT_NAMESPACE} --no-headers=true -l "che.workspace_id" | awk '{print $1}')"
+    local pods="$(oc get pods -n ${PRODUCT_NAMESPACE} --no-headers=true -l "che.workspace_id,che.original_name notin (che-jwtproxy)" | awk '{print $1}')"
     if [ "${#pods}" -eq "0" ]; then
         echo "=>> No workspaces found to backup"
         exit 0
