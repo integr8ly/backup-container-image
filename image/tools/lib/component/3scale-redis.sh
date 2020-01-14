@@ -13,13 +13,16 @@ function save {
 }
 
 function component_dump_data {
+    if [[ -z "${PRODUCT_NAMESPACE:-}" ]]; then
+        PRODUCT_NAMESPACE="${PRODUCT_NAMESPACE_PREFIX}3scale"
+    fi
     save
     local ts=$(date '+%H_%M_%S')
     dest_file="$1/archives/dump-${ts}.rdb"
     dump_rdb_path="/var/lib/redis/data/dump.rdb"
 
     oc projects
-    redis_pod_name=$(oc get pods -l deploymentConfig=backend-redis -o name -n ${PRODUCT_NAMESPACE_PREFIX}3scale | sed -e 's/^pod\///')
+    redis_pod_name=$(oc get pods -l deploymentConfig=backend-redis -o name -n ${PRODUCT_NAMESPACE} | sed -e 's/^pod\///')
 
-    cp_pod_data "${PRODUCT_NAMESPACE_PREFIX}3scale/${redis_pod_name}:${dump_rdb_path}" "${dest_file}"
+    cp_pod_data "${PRODUCT_NAMESPACE}/${redis_pod_name}:${dump_rdb_path}" "${dest_file}"
 }
