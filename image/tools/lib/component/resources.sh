@@ -14,7 +14,7 @@ function check_resource {
     # least two lines: one for the header and one for each
     # resource found
     if [ "$result"  -eq "1" ]; then
-        echo "==> No $type in $ns to back up"
+        timestamp_echo "No $type in $ns to back up"
         return 1
     else
         return 0
@@ -34,7 +34,7 @@ function backup_resource {
     set +eo pipefail
     check_resource ${type} ${ns}
     if [ "$?" -eq "0" ]; then
-        echo "==> backing up $type in $ns"
+        timestamp_echo "backing up $type in $ns"
         if [ "$loop" == "y" ]; then
             for obj in $(oc get ${type} -n ${ns} | tr -s ' ' | cut -d ' ' -f 1 |  tail -n +2); do
                 echo "$(oc get ${type}/${obj} -n ${ns} -o yaml --export)" > ${dest}/archives/${ns}-${type}.${obj}.yaml
@@ -51,7 +51,7 @@ function backup_resource {
 function backup_namespace {
     local ns=$1
     local dest=$2
-    echo "==> backing up namespace $ns"
+    timestamp_echo "Backing up namespace $ns"
     oc get namespace ${ns} -o yaml --export | gzip > ${dest}/archives/${ns}-namespace.yaml.gz
 }
 
@@ -60,7 +60,7 @@ function backup_namespace {
 function backup_service_accounts {
     local ns=$1
     local dest=$2
-    echo "==> backing up service accounts in $ns"
+    timestamp_echo "Backing up service accounts in $ns"
     oc get serviceaccounts -n ${ns} --field-selector='metadata.name!=builder,metadata.name!=deployer,metadata.name!=default' -o yaml --export | gzip > ${dest}/archives/${ns}-sa.yaml.gz
 }
 
@@ -68,7 +68,7 @@ function backup_service_accounts {
 function backup_role_bindings {
     local ns=$1
     local dest=$2
-    echo "==> backing up role bindings in $ns"
+    timestamp_echo "Backing up role bindings in $ns"
     oc get rolebindings -n ${ns} --field-selector='metadata.name!=system:deployers,metadata.name!=system:image-builders,metadata.name!=system:image-pullers' -o yaml --export | gzip > ${dest}/archives/${ns}-rb.yaml.gz
 }
 
@@ -76,7 +76,7 @@ function backup_role_bindings {
 function backup_cluster_resource {
     local type=$1
     local dest=$2
-    echo "==> backing up cluster resource $type"
+    timestamp_echo "Backing up cluster resource $type"
     oc get ${type} -o yaml --export | gzip > ${dest}/archives/${type}.yaml.gz
 }
 
@@ -96,7 +96,7 @@ function component_dump_data {
     local namespaces=$(get_middleware_namespaces)
 
     for ns in ${namespaces} "default"; do
-        echo "==> processing namespace $ns"
+        timestamp_echo "Processing namespace $ns"
         backup_resource secrets ${ns} ${dest}
         backup_resource configmaps ${ns} ${dest}
         backup_resource services ${ns} ${dest}
@@ -150,7 +150,7 @@ function component_dump_data {
         backup_namespace ${ns} ${dest}
     done
 
-    echo "==> processing cluster resources"
+    timestamp_echo "Processing cluster resources"
 
     # These resources are not located in a particular namespace
     backup_cluster_resource oauthclients ${dest}

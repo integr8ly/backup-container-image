@@ -29,7 +29,7 @@ if [[ "$debug" ]]; then
 fi
 
 if [[ -z "$component" ]]; then
-    (>&2 echo 'Please specify a component using "-c"')
+    (>&2 timestamp_echo 'Please specify a component using "-c"')
     exit 1
 fi
 
@@ -46,12 +46,14 @@ ARCHIVES_DEST=$DEST/archives
 mkdir -p $DEST $ARCHIVES_DEST
 export HOME=$DEST
 
+timestamp_echo "Starting backup"
+
 component_dump_data $DEST
 if [ "$?" -ne "0" ]; then
-    echo "==> Component data dump failed"
+    timestamp_echo "Component data dump failed"
     exit 1
 fi
-echo '==> Component data dump completed'
+timestamp_echo "Component data dump completed"
 
 if [[ "$encryption_engine" ]]; then
     check_encryption_enabled
@@ -59,13 +61,13 @@ if [[ "$encryption_engine" ]]; then
         encrypt_prepare ${DEST}
         encrypted_files="$(encrypt_archive $ARCHIVES_DEST)"
         if [ "$?" -ne "0" ]; then
-            echo "==> Encryption failed"
+            timestamp_echo "Encryption failed"
             exit 1
         fi
 
-        echo '==> Data encryption completed'
+        timestamp_echo "Data encryption completed"
     else
-        echo "==> encryption secret not found. Skipping"
+        timestamp_echo "Encryption secret not found. Skipping"
         encrypted_files="$ARCHIVES_DEST/*"
     fi
 else
@@ -74,13 +76,15 @@ fi
 
 upload_archive "${encrypted_files}" $DATESTAMP backups/$PRODUCT_NAME/$component
 if [ "$?" -ne "0" ]; then
-    echo "==> Archive upload failed"
+    timestamp_echo "Archive upload failed"
     exit 1
 fi
 
-echo "[$DATESTAMP] Backup completed"
+timestamp_echo "[$DATESTAMP] Backup completed"
 
 if [[ "$debug" ]]; then
-    echo '==> Debug flag detected - will sleep for all eternity'
+    timestamp_echo "Debug flag detected - will sleep for all eternity"
     sleep infinity
 fi
+
+timestamp_echo "Finished Backup"

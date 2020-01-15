@@ -39,7 +39,7 @@ function encrypt_archive {
         gpg --no-tty --batch --yes --encrypt --recipient "$recipient" --trust-model ${trust} ${fname}
         rc=$?
         if [[ ${rc} -ne 0 ]]; then
-            echo "==> Encrypt $fname: FAILED"
+            timestamp_echo "Encrypt $fname: FAILED"
             exit 1
         fi
     done

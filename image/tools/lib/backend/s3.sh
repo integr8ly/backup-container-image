@@ -20,9 +20,11 @@ function get_s3_access_key {
 }
 
 function upload_archive {
+    timestamp_echo "Starting upload"
+    
     check_backup_enabled
     if [ "$?" -eq "1" ]; then
-        echo "==> backend secret not found. Skipping"
+        timestamp_echo "backend secret not found. Skipping"
         return 0
     fi
 
@@ -42,12 +44,12 @@ function upload_archive {
             s3cmd put --access_key ${AWS_ACCESS_KEY_ID} --secret_key ${AWS_SECRET_ACCESS_KEY} --progress ${fname} "s3://$AWS_S3_BUCKET_NAME/$bucket_folder/$datestamp/$(basename ${fname})"
             rc=$?
             if [ "${rc}" -ne "0" ]; then
-                echo "==> Upload $fname: FAILED"
+                timestamp_echo "Upload $fname: FAILED"
                 exit 1
             fi
-            echo "==> Upload ${fname} completed"
+            timestamp_echo "Upload ${fname} completed"
         else
-            echo "==> No backups in ${fname} to upload"
+            timestamp_echo "No backups in ${fname} to upload"
         fi
     done
 }

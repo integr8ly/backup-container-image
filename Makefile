@@ -5,7 +5,7 @@ IMAGE=backup-container
 TAG=latest
 
 image/build:
-	@(cd image; docker build -t ${REG}/${ORG}/${IMAGE}:${TAG} .)
+	@docker build -t ${REG}/${ORG}/${IMAGE}:${TAG} ./image
 
 image/push:
 	@docker push ${REG}/${ORG}/${IMAGE}:${TAG}
