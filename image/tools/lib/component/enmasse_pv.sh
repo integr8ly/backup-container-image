@@ -23,14 +23,14 @@ function component_dump_data {
     local pods=$(get_broker_pods)
 
     if [ "${#pods}" -eq "0" ]; then
-        echo "=>> No broker pods found to backup"
+        timestamp_echo "No broker pods found to backup"
         exit 0
     fi
 
     mkdir -p ${dump_dest}
 
     for pod in ${pods}; do
-        echo "==> processing enmasse broker pod ${pod}"
+        timestamp_echo "Processing enmasse broker pod ${pod}"
         dump_pod_data ${pod} ${dump_dest}
     done
 
@@ -40,6 +40,6 @@ function component_dump_data {
         tar -zcvf "$archive_path/enmasse-pv-data-${ts}.tar.gz" -C $dump_dest .
         rm -rf $dump_dest
     else
-        echo "==> no enmasse broker data to backup"
+        timestamp_echo "No enmasse broker data to backup"
     fi
 }

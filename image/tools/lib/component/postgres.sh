@@ -50,7 +50,7 @@ function component_dump_data {
     ${POSTGRES_PREFIX}/pg_dumpall --clean --if-exists --oids -U ${POSTGRES_USERNAME} -h ${POSTGRES_HOST} | gzip > ${dest}/archives/${namespace}.${ts}.pg_dumpall.gz
     rc=$?
     if [[ "${rc}" -ne "0" ]]; then
-      echo "backup of postgresql: FAILED"
+      timestamp_echo "Backup of postgresql: FAILED"
       exit 1
     fi
   else
@@ -61,11 +61,11 @@ function component_dump_data {
         continue
       fi
 
-      echo "dumping ${db}"
+      timestamp_echo "dumping ${db}"
       ${POSTGRES_PREFIX}/pg_dump --clean --if-exists --oids -U ${POSTGRES_USERNAME} -h ${POSTGRES_HOST} ${db} | gzip > ${dest}/archives/${namespace}.${db}-${ts}.pg_dump.gz
       rc=$?
       if [[ "${rc}" -ne "0" ]]; then
-          echo "==> Dump $db: FAILED"
+          timestamp_echo "Dump $db: FAILED"
           exit 1
       fi
     done

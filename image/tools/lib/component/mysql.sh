@@ -24,7 +24,7 @@ function component_dump_data {
 
     check_mysql_backup_enabled
     if [[ $? -eq 1 ]]; then
-        echo "==> mysql secret not found in default namespace. Skipping"
+        timestamp_echo "Mysql secret not found in default namespace. Skipping"
         exit 0
     fi
 
@@ -39,7 +39,7 @@ function component_dump_data {
         mysqldump --single-transaction -h${MYSQL_HOST} -u${MYSQL_USER} -p${MYSQL_PASSWORD} -R ${database} | gzip > ${dest}/archives/${database}-${ts}.dump.gz
         local rc=$?
         if [ "${rc}" -ne "0" ]; then
-            echo "==> Dump $database: FAILED"
+            timestamp_echo "Dump $database: FAILED"
             exit 1
         fi
     done
