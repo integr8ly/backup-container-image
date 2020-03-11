@@ -20,7 +20,12 @@ function component_dump_data {
     fi
     local archive_path="$1/archives"
     local dump_dest="/tmp/enmasse-data"
-    local pods=$(get_broker_pods)
+    local pods=$(get_broker_pods 2>&1)
+
+    if [[ "$pods" == *"Error from server"* ]]; then
+        echo ${pods}
+        exit 1
+    fi
 
     if [ "${#pods}" -eq "0" ]; then
         timestamp_echo "No broker pods found to backup"
