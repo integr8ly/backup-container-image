@@ -59,21 +59,11 @@ function component_dump_data {
     local ns=${PRODUCT_NAMESPACE}
 
     timestamp_echo "Processing namespace $ns"
-    backup_resource messagingusers ${ns} ${dest} 'y'
-    backup_resource addressspaceschemas ${ns} ${dest}
-    backup_resource addresses ${ns} ${dest}
-    backup_resource addressspaces ${ns} ${dest}
     backup_resource brokeredinfraconfigs ${ns} ${dest}
     backup_resource standardinfraconfigs ${ns} ${dest}
     backup_resource addressplans ${ns} ${dest}
     backup_resource addressspaceplans ${ns} ${dest}
     backup_resource authenticationservices ${ns} ${dest}
-    backup_resource brokeredinfraconfigs ${ns} ${dest}
-    backup_resource consoleservices ${ns} ${dest}
-    backup_resource iotconfigs ${ns} ${dest}
-    backup_resource iotprojects ${ns} ${dest}
-    backup_resource secrets ${ns} ${dest}
-    backup_resource configmaps ${ns} ${dest}
     timestamp_echo "Processing cluster resources"
 
     # Create a single archive including all files
