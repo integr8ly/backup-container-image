@@ -4,7 +4,7 @@ function dump_pod_data {
     workspace_pod_name=$1
     dump_dest=$2
     workspace_id=$(echo ${workspace_pod_name} | awk -F"." '{ print $1}')
-    cp_pod_data "${PRODUCT_NAMESPACE}/${workspace_pod_name}:/projects" "${dump_dest}/${workspace_id}"
+    cp_container_data "${workspace_pod_name}" "${PRODUCT_NAMESPACE}/${workspace_pod_name}:/projects" "${dump_dest}/${workspace_id}"
 }
 
 function component_dump_data {
