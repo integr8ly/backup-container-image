@@ -6,6 +6,11 @@ function cp_pod_data {
 
     num_attempted_copy=0
     max_tries=5
+
+    # Disable errors because files contains may change during backups, which is acceptable and expected in production
+    # JIRA: https://issues.redhat.com/browse/INTLY-10129
+    set +eo pipefail
+
     copy_output=$(oc cp $pod_data_src $cp_dest)
     # Check if any files were rewritten to during oc cp, and copy it again if it was.
     while [[ $copy_output == *"file changed as we read it"* ]] && [ $num_attempted_copy -lt $max_tries ]
@@ -15,6 +20,9 @@ function cp_pod_data {
        copy_output=$(oc cp $pod_data_src $cp_dest)
        ((num_attempted_copy++))
     done
+
+    # Re-enable errors
+    set -eo pipefail
 }
 
 # Backup every container inside a pod
