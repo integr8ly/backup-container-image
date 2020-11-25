@@ -5,7 +5,7 @@ function cp_pod_data {
     cp_dest=$2
 
     num_attempted_copy=0
-    max_tries=5
+    max_tries=3
 
     # Disable errors because files contains may change during backups, which is acceptable and expected in production
     # JIRA: https://issues.redhat.com/browse/INTLY-10129
@@ -38,7 +38,7 @@ function cp_container_data {
       container_dest="$cp_dest-$container"
       timestamp_echo "backing up container $container in pod $pod_name"
       num_attempted_copy=0
-      max_tries=5
+      max_tries=3
 
       # Disable errors because some of the containers might not have the directory to back up
       set +eo pipefail
