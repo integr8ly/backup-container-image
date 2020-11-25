@@ -20,6 +20,7 @@ function component_dump_data {
     fi
     local archive_path="$1/archives"
     local dump_dest="/tmp/enmasse-data"
+    local archive_temp="/tmp/archive_temp"
     local pods=$(get_broker_pods 2>&1)
 
     if [[ "$pods" == *"Error from server"* ]]; then
@@ -32,18 +33,30 @@ function component_dump_data {
         exit 0
     fi
 
-    mkdir -p ${dump_dest}
+    mkdir -p ${archive_temp}
 
     for pod in ${pods}; do
         timestamp_echo "Processing enmasse broker pod ${pod}"
+        mkdir -p ${dump_dest}
         dump_pod_data ${pod} ${dump_dest}
+        ls ${dump_dest}/*
+        if [ "$?" -eq "0" ]; then
+            local ts=$(date '+%H_%M_%S')
+            timestamp_echo "Creating archive for pod ${pod}"
+            tar -zcvf "$archive_temp/${pod}-${ts}.tar.gz" -C $dump_dest .
+            rm -rf $dump_dest
+        else
+            timestamp_echo "No enmasse broker data to backup for pod: ${pod}"
+    fi
+
     done
 
-    ls ${dump_dest}/*
+    timestamp_echo "Creating main archive"
+    ls ${archive_temp}/*
     if [ "$?" -eq "0" ]; then
         local ts=$(date '+%H_%M_%S')
-        tar -zcvf "$archive_path/enmasse-pv-data-${ts}.tar.gz" -C $dump_dest .
-        rm -rf $dump_dest
+        tar -zcvf "$archive_path/enmasse-pv-data-${ts}.tar.gz" -C $archive_temp .
+        rm -rf $archive_temp
     else
         timestamp_echo "No enmasse broker data to backup"
     fi
