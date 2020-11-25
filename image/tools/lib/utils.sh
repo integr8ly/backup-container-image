@@ -5,7 +5,8 @@ function cp_pod_data {
     cp_dest=$2
 
     num_attempted_copy=0
-    max_tries=5
+    max_tries=3
+
     copy_output=$(oc cp $pod_data_src $cp_dest)
     # Check if any files were rewritten to during oc cp, and copy it again if it was.
     while [[ $copy_output == *"file changed as we read it"* ]] && [ $num_attempted_copy -lt $max_tries ]
@@ -30,7 +31,7 @@ function cp_container_data {
       container_dest="$cp_dest-$container"
       timestamp_echo "backing up container $container in pod $pod_name"
       num_attempted_copy=0
-      max_tries=5
+      max_tries=3
 
       # Disable errors because some of the containers might not have the directory to back up
       set +eo pipefail
