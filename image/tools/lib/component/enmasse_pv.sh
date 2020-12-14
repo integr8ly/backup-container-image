@@ -34,17 +34,26 @@ function component_dump_data {
 
     mkdir -p ${dump_dest}
 
+    local ts
+    ts=$(date '+%H_%M_%S')
+    local archive="${archive_path}/enmasse-pv-data-${ts}.tar"
+    tar -cvf "${archive}" --files-from /dev/null
+
     for pod in ${pods}; do
         timestamp_echo "Processing enmasse broker pod ${pod}"
         dump_pod_data ${pod} ${dump_dest}
+
+        ls ${dump_dest}/*
+        if [ "$?" -eq "0" ]; then
+            tar --append -vf "${archive}" -C "${dump_dest}" .
+            rm -rf ${dump_dest:?}/*
+        else
+            timestamp_echo "No enmasse broker data to backup"
+        fi
     done
 
-    ls ${dump_dest}/*
-    if [ "$?" -eq "0" ]; then
-        local ts=$(date '+%H_%M_%S')
-        tar -zcvf "$archive_path/enmasse-pv-data-${ts}.tar.gz" -C $dump_dest .
-        rm -rf $dump_dest
-    else
-        timestamp_echo "No enmasse broker data to backup"
+    if [[ -f ${archive} ]]; then
+        gzip "${archive}"
     fi
+    rm -rf ${dump_dest}
 }
