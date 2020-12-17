@@ -5,14 +5,17 @@ function cp_pod_data {
     cp_dest=$2
 
     num_attempted_copy=0
-    max_tries=5
-    copy_output=$(oc cp $pod_data_src $cp_dest)
-    # Check if any files were rewritten to during oc cp, and copy it again if it was.
-    while [[ $copy_output == *"file changed as we read it"* ]] && [ $num_attempted_copy -lt $max_tries ]
+    max_tries=3
+
+    oc cp $pod_data_src $cp_dest
+    ret=$?
+
+    while [[ $ret != 0 && $num_attempted_copy -lt $max_tries ]]
     do
-       timestamp_echo "A file has been overwritten during copying, executing 'oc cp' again"
+       timestamp_echo "'oc cp' failed with exit code ${ret}, will retry in 5 seconds, attempt ${num_attempted_copy} of ${max_tries}"
        sleep 5
-       copy_output=$(oc cp $pod_data_src $cp_dest)
+       oc cp $pod_data_src $cp_dest
+       ret=$?
        ((num_attempted_copy++))
     done
 }
@@ -30,18 +33,20 @@ function cp_container_data {
       container_dest="$cp_dest-$container"
       timestamp_echo "backing up container $container in pod $pod_name"
       num_attempted_copy=0
-      max_tries=5
+      max_tries=3
 
       # Disable errors because some of the containers might not have the directory to back up
       set +eo pipefail
 
-      copy_output=$(oc cp "$pod_data_src" "$container_dest" -c "$container")
+      oc cp "$pod_data_src" "$container_dest" -c "$container"
+      ret=$?
       # Check if any files were rewritten to during oc cp, and copy it again if it was.
-      while [[ $copy_output == *"file changed as we read it"* ]] && [ $num_attempted_copy -lt $max_tries ]
+      while [[ $ret != 0 && $num_attempted_copy -lt $max_tries ]]
       do
-         timestamp_echo "A file has been overwritten during copying, executing 'oc cp' again"
+         timestamp_echo "'oc cp' failed with exit code ${ret}, will retry in 5 seconds, attempt ${num_attempted_copy} of ${max_tries}"
          sleep 5
-         copy_output=$(oc cp "$pod_data_src" "$container_dest" -c "$container")
+         oc cp "$pod_data_src" "$container_dest" -c "$container"
+         ret=$?
          ((num_attempted_copy++))
       done
 
